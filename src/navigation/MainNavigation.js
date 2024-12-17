@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen';
 import AccountScreen from '../screens/AccountScreen';
 import ThemeContext from '../context/ThemeContext';
+import GameScreen from '../screens/GameScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,9 +38,17 @@ function BottomTabNavigator() {
 }
 
 function StackNavigator() {
+    const { theme } = useContext(ThemeContext);
     return (
         <Stack.Navigator screenOptions={{headerTitleStyle: {fontWeight: 'bold'}}}>
-            <Stack.Screen name="Main" component={BottomTabNavigator} options={{ headerShown: false }}/>
+            <Stack.Screen name="Back" component={BottomTabNavigator} options={{ headerShown: false }}/>
+            <Stack.Screen name="GameScreen" component={GameScreen} options={{
+                headerStyle: {backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7'}, 
+                headerTintColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+                }}/>
         </Stack.Navigator>
     );
 }
