@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+
 import ThemeContext from '../context/ThemeContext';
+
 import Deck from '../deck/Deck';
+import SwipeButton from '../Buttons/SwipeButton';
 
 const GameScreen = () => {
   const { theme } = useContext(ThemeContext);
@@ -11,21 +14,21 @@ const GameScreen = () => {
       flex: 1,
       backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
     },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
-      marginBottom: 10,
-    },
-    subtitle: {
-      fontSize: 16,
-      color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+    btnContainer: {
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'space-evenly',
     },
   });
 
   return (
     <SafeAreaView style={styles.container}>
         <Deck />
+        <View style={styles.btnContainer}>
+          <SwipeButton text={'No'} colour={'red'} />
+          <SwipeButton text={'Maybe'} colour={'orange'} />
+          <SwipeButton text={'Yes'} colour={'green'} />
+        </View>
     </SafeAreaView>
   );
 };

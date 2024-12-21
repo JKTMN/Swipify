@@ -1,17 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ThemeContext from '../context/ThemeContext';
-import GetStartedButton from '../Buttons/GetStartedButton';
-import SearchFilterInput from '../SearchBars/SearchFilterInput';
-import ResultList from '../flatlists/ResultsList';
 
 import getPlaylistData from '../api/GetTempPlaylists';
+import PlaylistList from '../flatlists/PlaylistsList';
+import CreatePlaylistButton from '../Buttons/CreateNewPlaylistButton';
 
-const HomeScreen = () => {
+const PlaylistScreen = () => {
   const { theme } = useContext(ThemeContext);
   const navigation = useNavigation();
-  const [searchTerm, setSearchTerm] = useState('');
 
   const [playlists, setPlaylists] = useState([]);
 
@@ -33,38 +31,48 @@ const HomeScreen = () => {
     container: {
       flex: 1,
       backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
-    },
-    content: {
-      flex: 1,
       alignItems: 'center',
       padding: 20,
+      paddingTop: 30,
+    },
+    centeredContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     title: {
-      fontSize: 20,
+      fontSize: 24,
       fontWeight: 'bold',
       color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
       marginBottom: 10,
-      marginTop: 30,
+      marginTop: 20,
     },
     subtitle: {
       fontSize: 16,
       color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+      textAlign: 'center',
+      marginBottom: 20,
     },
   });
 
-
   return (
-    <ScrollView>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
-          <Text style={styles.title}>Search for an artist, song, or genre</Text>
-          <SearchFilterInput placeholder='Search...' value={searchTerm} onChangeText={setSearchTerm} />
-          <ResultList data={playlists}/>
-          <GetStartedButton/>
+    <SafeAreaView style={styles.container}>
+      {playlists.length === 0 ? (
+        <View style={styles.centeredContainer}>
+          <Text style={styles.subtitle}>
+            You haven’t generated any playlists yet. Click the button below to begin.
+          </Text>
+          <CreatePlaylistButton onPress={() => navigation.navigate('CreatePlaylist')} />
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      ) : (
+        <>
+          <Text style={styles.title}>Playlists you've generated</Text>
+          <PlaylistList data={playlists} />
+          <CreatePlaylistButton onPress={() => navigation.navigate('CreatePlaylist')} />
+        </>
+      )}
+    </SafeAreaView>
   );
 };
 
-export default HomeScreen;
+export default PlaylistScreen;
