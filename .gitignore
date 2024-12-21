@@ -31,10 +31,6 @@ yarn-error.*
 
 # local env files
 .env*.local
-.env
 
 # typescript
 *.tsbuildinfo
-
-src/api/GetTempPlaylists.js
-assets/TempImages
