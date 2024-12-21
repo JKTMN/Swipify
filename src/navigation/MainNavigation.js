@@ -10,6 +10,9 @@ import AccountScreen from '../screens/AccountScreen';
 import ThemeContext from '../context/ThemeContext';
 import GameScreen from '../screens/GameScreen';
 import PlaylistScreen from '../screens/PlaylistScreen';
+import SignupScreen from '../screens/SignupScreen';
+import LoginScreen from '../screens/LoginScreen';
+import EditPlaylistDetailsScreen from '../screens/EditPlaylistDetails';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -33,8 +36,10 @@ function BottomTabNavigator() {
                 fontWeight: 'bold',
             },
          }}>
-            <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarIcon: ({ color }) => <Ionicons name="home" size={30} color={color} />,headerTitleAlign: 'center'}}/>
-            <Tab.Screen name="Playlists" component={PlaylistScreen} options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons name="playlist-music-outline" size={30} color={color} />,headerTitleAlign: 'center'}}/>
+            {/* <Tab.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }}/>
+            <Tab.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/> */}
+            <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarIcon: ({ color }) => <Ionicons name="home" size={30} color={color} />, headerTitleAlign: 'center'}}/>
+            <Tab.Screen name="Playlists" component={PlaylistScreen} options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons name="playlist-music-outline" size={30} color={color} />, headerTitleAlign: 'center'}}/>
             <Tab.Screen name="Account" component={AccountScreen} options={{ tabBarIcon: ({ color }) => <Ionicons name="person" size={30} color={color} />}}/>
         </Tab.Navigator>
     );
@@ -52,6 +57,7 @@ function StackNavigator() {
                     fontWeight: 'bold',
                 },
                 }}/>
+            <Stack.Screen name="PlaylistDetails" component={EditPlaylistDetailsScreen} />
         </Stack.Navigator>
     );
 }

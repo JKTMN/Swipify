@@ -2,9 +2,11 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import ThemeContext from '../context/ThemeContext';
+import { useNavigation } from '@react-navigation/native';
 
 const Deck = () => {
   const { theme } = useContext(ThemeContext);
+  const navigation = useNavigation();
 
   const styles = StyleSheet.create({
     deckContainer: {
@@ -41,7 +43,7 @@ const Deck = () => {
                 )
             }}
             onSwiped={(cardIndex) => {console.log(cardIndex)}}
-            onSwipedAll={() => {console.log('onSwipedAll')}}
+            onSwipedAll={() => navigation.navigate('PlaylistDetails')}
             cardIndex={0}
             backgroundColor={'transparent'}
             stackSize={3}

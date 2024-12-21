@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, SafeAreaView, useColorScheme, TouchableOpacity,
 
 import ThemeContext from '../context/ThemeContext';
 
+import LinkAccountButton from '../Buttons/LinkAccountButton';
+
 const AccountScreen = () => {
   const systemTheme = useColorScheme();
   const { theme, toggleTheme, useSystemTheme } = useContext(ThemeContext);
@@ -75,6 +77,9 @@ const AccountScreen = () => {
               <TouchableOpacity style={styles.button} onPress={() => toggleTheme('light')}><Text style={styles.buttonText}>Light Theme</Text></TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={() => toggleTheme('dark')}><Text style={styles.buttonText}>Dark Theme</Text></TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={() => useSystemTheme()}><Text style={styles.buttonText}>System Theme</Text></TouchableOpacity>
+            </View>
+            <View>
+              <LinkAccountButton />
             </View>
       </View>
     </SafeAreaView>
