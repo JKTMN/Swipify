@@ -57,7 +57,13 @@ function StackNavigator() {
                     fontWeight: 'bold',
                 },
                 }}/>
-            <Stack.Screen name="PlaylistDetails" component={EditPlaylistDetailsScreen} />
+            <Stack.Screen name="PlaylistDetails" component={EditPlaylistDetailsScreen} options={{
+                headerStyle: {backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7'}, 
+                headerTintColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+                }}/>
         </Stack.Navigator>
     );
 }

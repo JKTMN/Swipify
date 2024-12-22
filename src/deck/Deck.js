@@ -47,7 +47,6 @@ const Deck = () => {
             cardIndex={0}
             backgroundColor={'transparent'}
             stackSize={3}
-            disableBottomSwipe
             disableTopSwipe
         />
     </View>

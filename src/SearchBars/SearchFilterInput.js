@@ -3,6 +3,7 @@ import { View, TextInput, StyleSheet} from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 import ThemeContext from '../context/ThemeContext';
+import DropDown from '../dropdown/Dropdown';
 
 function SearchFilterInput ({ value, onChangeText, placeholder }) {
     const { theme } = useContext(ThemeContext);
@@ -28,7 +29,8 @@ function SearchFilterInput ({ value, onChangeText, placeholder }) {
     return (
         <View style={styles.inputSection}>
             <AntDesign name="search1" size={24} color={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'} />
-            <TextInput placeholder={placeholder} value={value} onChangeText={onChangeText} style={styles.searchInput} />
+            <TextInput placeholder={placeholder} value={value} onChangeText={onChangeText} style={styles.searchInput} placeholderTextColor={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}/>
+            <DropDown />
         </View>
     );
 }
