@@ -4,24 +4,27 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import ResultItem from '../flatlistItems/ResultItem';
 import getPlaylistData from '../api/GetTempPlaylists';
 
-export default function ResultList({ data }) {
-    const [ResultData, setResultData] = useState(data);
+export default function ResultList(props) {
+    const [ResultData, setResultData] = useState(props.data);
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        setResultData(data);
-    }, [data]);
+        setResultData(props.data);
+    }, [props.data]);
 
     return (
         <View style={styles.container}>
             <FlatList
-            data={data}
+            data={props.data}
             keyExtractor={( item ) => item.id}
             renderItem={({ item }) => (
                 <ResultItem
                 title={item.title}
                 image={item.image}
                 description={item.description}
+                imgSize={props.imgSize}
+                headingSize={props.headingSize}
+                descriptionSize={props.descriptionSize}
                 />
             )}
             refreshing={refreshing}

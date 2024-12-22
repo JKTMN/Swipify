@@ -1,94 +1,102 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, useColorScheme, TouchableOpacity, OnPress, TextInput } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import ThemeContext from '../context/ThemeContext';
 import ResultList from '../flatlists/ResultsList';
 import CreatePlaylistButton from '../Buttons/CreatePlaylistButton';
-
+import getPlaylistData from '../api/GetTempPlaylists';
+import ImageUploader from '../imageUploader/ImageUploader';
 
 const EditPlaylistDetailsScreen = () => {
-  const { theme } = useContext(ThemeContext);  
+  const { theme } = useContext(ThemeContext);
 
   const styles = StyleSheet.create({
-      container: {
-          flex: 1,
-          backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
-      },
-      content: {
-          flex: 1,
-          alignItems: 'center',
-          padding: 30,
-      },
-      image: {
-        width: 150,
-        height: 150,
-        backgroundColor: 'grey',
-      },
-      imageText: {
-        fontSize: 20,
-        marginBottom: 40,
-      },
-      input: {
-        height: 40,
-        width: 250,
-        borderColor: '#000',
-        borderWidth: 1,
-        borderRadius: 10,
-        marginBottom: 15,
-        paddingHorizontal: 15,
-        color: '#fff',
+    container: {
+      flex: 1,
+      backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
+    },
+    content: {
+      flexGrow: 1,
+      alignItems: 'center',
+      padding: 30,
+    },
+    imageText: {
+      fontSize: 20,
+      marginBottom: 40,
+      color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+    },
+    input: {
+      height: 40,
+      width: 250,
+      borderColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+      borderWidth: 1,
+      borderRadius: 10,
+      marginBottom: 15,
+      paddingHorizontal: 15,
+      color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+    },
+    results: {
+      flex: 1,
+      width: '80%',
     },
     row: {
-      width: '80%',
       flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 20,
+    },
+    leftText: {
+      textAlign: 'left',
+      color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+    },
+    rightSection: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    listContainer: {
+      paddingLeft: 15,
+      marginBottom: 15,
     },
   });
 
-
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.image}>
-        </View>
-        <Text style={styles.imageText}>Change cover art</Text>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <ImageUploader />
+      <Text style={styles.imageText}>Change cover art</Text>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter playlist name"
-            placeholderTextColor={'#000'}
-            secureTextEntry
-            value={null}
-            onChangeText={null}
+      <View>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter playlist name"
+          placeholderTextColor={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}
+          value={null}
+          onChangeText={null}
         />
 
         <TextInput
-            style={styles.input}
-            placeholder="Enter playlist description"
-            placeholderTextColor={'#000'}
-            secureTextEntry
-            value={null}
-            onChangeText={null}
+          style={styles.input}
+          placeholder="Enter playlist description"
+          placeholderTextColor={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}
+          value={null}
+          onChangeText={null}
         />
-        </View>
-
-        <View style={styles.results}>
-          <View style={styles.row}>
-            <View style={{justifyContent: 'flex-start'}}>
-              <Text>Your choices:</Text>
-            </View>
-            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-              <Text>Edit</Text>
-              <Ionicons name="create-outline" size={24} color={'#000'} />
-            </View>
-          </View>
-        </View>
-        <CreatePlaylistButton />
-
       </View>
 
-    </View>
+      <View style={styles.results}>
+        <View style={styles.row}>
+          <Text style={styles.leftText}>Your choices:</Text>
+          <View style={styles.rightSection}>
+            <Text style={{ color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B' }}>Edit</Text>
+            <Ionicons name="create-outline" size={24} color={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'} />
+          </View>
+        </View>
+        <View style={styles.listContainer}>
+          <ResultList data={getPlaylistData()} imgSize={40} headingSize={14} descriptionSize={12} />
+        </View>
+      </View>
+      <CreatePlaylistButton />
+    </ScrollView>
   );
 };
 

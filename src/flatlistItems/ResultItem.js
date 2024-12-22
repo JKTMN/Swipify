@@ -6,7 +6,7 @@ import ThemeContext from '../context/ThemeContext';
 
 const ResultItem = (props) => {
     const { theme } = useContext(ThemeContext);
-    const { title, image, description } = props;
+    const { title, image, description, imgSize, headingSize, descriptionSize } = props;
 
     const styles = StyleSheet.create({
         listItemContainer: {
@@ -22,8 +22,8 @@ const ResultItem = (props) => {
           alignItems: 'center',
         },
         image: {
-          width: 60,
-          height: 60,
+          width: imgSize,
+          height: imgSize,
           marginRight: 10,
         },
         textContainer: {
@@ -32,13 +32,13 @@ const ResultItem = (props) => {
           justifyContent: 'center',
         },
         heading: {
-          fontSize: 18,
+          fontSize: headingSize,
           fontWeight: 'bold',
           color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
           marginBottom: 5,
         },
         description: {
-          fontSize: 14,
+          fontSize: descriptionSize,
           color: theme === 'dark' ? '#F5F5F5' : '#363636',
         },
         icon: {

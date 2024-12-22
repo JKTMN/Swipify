@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "expo-image-picker": {
+      "photosPermission": "The app accesses your photos to customise playlist cover art."
+    },
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",

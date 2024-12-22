@@ -34,8 +34,8 @@ const HomeScreen = () => {
       flex: 1,
       backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
     },
-    content: {
-      flex: 1,
+    scrollContent: {
+      flexGrow: 1,
       alignItems: 'center',
       padding: 20,
     },
@@ -52,18 +52,22 @@ const HomeScreen = () => {
     },
   });
 
-
   return (
-    <ScrollView>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
-          <Text style={styles.title}>Search for an artist, song, or genre</Text>
-          <SearchFilterInput placeholder='Search...' value={searchTerm} onChangeText={setSearchTerm} />
-          <ResultList data={playlists}/>
-          <GetStartedButton/>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Text style={styles.title}>Search for an artist, song, or genre</Text>
+        <SearchFilterInput
+          placeholder="Search..."
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+        />
+        <ResultList data={playlists} imgSize={55} headingSize={16} descriptionSize={14}/>
+        <GetStartedButton />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
