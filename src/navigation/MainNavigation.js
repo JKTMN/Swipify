@@ -13,6 +13,7 @@ import PlaylistScreen from '../screens/PlaylistScreen';
 import SignupScreen from '../screens/SignupScreen';
 import LoginScreen from '../screens/LoginScreen';
 import EditPlaylistDetailsScreen from '../screens/EditPlaylistDetails';
+import TestScreen from '../screens/testscreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,6 +42,7 @@ function BottomTabNavigator() {
             <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarIcon: ({ color }) => <Ionicons name="home" size={30} color={color} />, headerTitleAlign: 'center'}}/>
             <Tab.Screen name="Playlists" component={PlaylistScreen} options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons name="playlist-music-outline" size={30} color={color} />, headerTitleAlign: 'center'}}/>
             <Tab.Screen name="Account" component={AccountScreen} options={{ tabBarIcon: ({ color }) => <Ionicons name="person" size={30} color={color} />}}/>
+            <Tab.Screen name="test" component={TestScreen} />
         </Tab.Navigator>
     );
 }

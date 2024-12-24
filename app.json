@@ -6,8 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "expo-image-picker": {
-      "photosPermission": "The app accesses your photos to customise playlist cover art."
+    "scheme": "spotify_playlist_maker",
+    "extra": {
+      "spotifyRedirectUri": "spotify_playlist_maker://callback"
     },
     "newArchEnabled": true,
     "splash": {
@@ -28,6 +29,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

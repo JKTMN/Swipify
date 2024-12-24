@@ -2,10 +2,10 @@ import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const LinkAccountButton = () => {
+const LinkAccountButton = ({onPress}) => {
 
     return (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
             <Text style={styles.text}>Link Account</Text>
         </TouchableOpacity>
     );

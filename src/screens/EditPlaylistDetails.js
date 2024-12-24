@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import ThemeContext from '../context/ThemeContext';
@@ -86,10 +86,10 @@ const EditPlaylistDetailsScreen = () => {
       <View style={styles.results}>
         <View style={styles.row}>
           <Text style={styles.leftText}>Your choices:</Text>
-          <View style={styles.rightSection}>
+            <TouchableOpacity style={styles.rightSection} onPress={() => alert("Edit button pressed!")}>
             <Text style={{ color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B' }}>Edit</Text>
             <Ionicons name="create-outline" size={24} color={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'} />
-          </View>
+            </TouchableOpacity>
         </View>
         <View style={styles.listContainer}>
           <ResultList data={getPlaylistData()} imgSize={40} headingSize={14} descriptionSize={12} />

@@ -14,7 +14,7 @@ const DropDown = () => {
     const styles = StyleSheet.create ({
         dropdown: {
             margin: 16,
-            height: 20,
+            height: 30,
             width: 95,
             backgroundColor: '#EEEEEE',
             borderRadius: 22,
