@@ -19,7 +19,7 @@ export default function ResultList(props) {
             keyExtractor={( item ) => item.id}
             renderItem={({ item }) => (
                 <ResultItem
-                title={item.title}
+                name={item.name}
                 image={item.image}
                 description={item.description}
                 imgSize={props.imgSize}

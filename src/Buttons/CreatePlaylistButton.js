@@ -1,9 +1,9 @@
 import React from 'react';
-import { TouchableOpacity , Text, StyleSheet } from 'react-native';
+import { TouchableOpacity , Text, StyleSheet, onPress } from 'react-native';
 
-const CreatePlaylistButton = () => {
+const CreatePlaylistButton = ({onPress}) => {
     return (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
             <Text style={styles.text}>Create Playlist</Text>
         </TouchableOpacity>
     );

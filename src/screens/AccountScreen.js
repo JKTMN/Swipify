@@ -4,6 +4,7 @@ import ThemeContext from '../context/ThemeContext';
 import LinkAccountButton from '../Buttons/LinkAccountButton';
 import authenticateWithSpotify from '../api/spotifyAuth';
 import { Link } from '@react-navigation/native';
+import { GetUserDetails } from '../api/SpotifyGetUserDetails';
 
 const AccountScreen = () => {
   const systemTheme = useColorScheme();
@@ -71,6 +72,7 @@ const AccountScreen = () => {
 
         <View style={styles.loginContainer}>
           <LinkAccountButton onPress={authenticateWithSpotify} />
+          <LinkAccountButton onPress={GetUserDetails} />
           {authCode && <Text>Authorization Code: {authCode}</Text>}
         </View>
       </View>

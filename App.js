@@ -7,15 +7,19 @@ import {ThemeProvider} from './src/context/ThemeContext';
 import StackNavigator from './src/navigation/MainNavigation';
 import { AuthProvider } from './src/context/AccessTokenContext';
 
+import { UserProvider } from './src/context/UserDetailsContext';
+
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <NavigationContainer>
-          <StackNavigator />
-        </NavigationContainer>
-      </AuthProvider>
-    </ThemeProvider>
+    <UserProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <NavigationContainer>
+            <StackNavigator />
+          </NavigationContainer>
+        </AuthProvider>
+      </ThemeProvider>
+    </UserProvider>
   );
 }

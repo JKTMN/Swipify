@@ -10,6 +10,7 @@ const data = [
 
 const DropDown = () => {
     const [choice, setChoice] = useState(null);
+    //once context for choice use add here to add choice to context
 
     const styles = StyleSheet.create ({
         dropdown: {

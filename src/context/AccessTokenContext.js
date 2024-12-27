@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
             const token = await SecureStore.getItemAsync('spotifyAccessToken');
             if (token) {
                 setAccessToken(token);
+
             }
         };
         loadToken();

@@ -6,7 +6,7 @@ import ThemeContext from '../context/ThemeContext';
 
 const ResultItem = (props) => {
     const { theme } = useContext(ThemeContext);
-    const { title, image, description, imgSize, headingSize, descriptionSize } = props;
+    const { name, image, description, imgSize, headingSize, descriptionSize } = props;
 
     const styles = StyleSheet.create({
         listItemContainer: {
@@ -50,9 +50,9 @@ const ResultItem = (props) => {
     return (
         <View style={styles.listItemContainer}>
           <View style={styles.row}>
-              <Image source={image} style={styles.image} />
+              <Image source={{uri: image}} style={styles.image} />
               <View style={styles.textContainer}>
-              <Text style={styles.heading}>{title}</Text>
+              <Text style={styles.heading}>{name}</Text>
               <Text style={styles.description}>{description}</Text>
               </View>
           </View>

@@ -4,6 +4,8 @@ const GetUserDetails = async (accessToken) => {
         //get new token
     }
 
+    
+
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
     };
@@ -17,8 +19,16 @@ const GetUserDetails = async (accessToken) => {
         const data = await response.json();
 
         if (response.ok) {
-            console.log('User Details:', data);
-            return data;
+            console.log(data);
+            const userDetails = {
+                uri: data.uri,
+                userId: data.id,
+                displayName: data.display_name,
+                images: data.images[0],
+                country: data.country,
+            };
+
+            return userDetails;
         } else {
             console.error('Error fetching user details:', data);
             throw new Error(data.error?.message || 'Failed to get user details');

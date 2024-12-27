@@ -5,29 +5,31 @@ import ThemeContext from '../context/ThemeContext';
 import GetStartedButton from '../Buttons/GetStartedButton';
 import SearchFilterInput from '../SearchBars/SearchFilterInput';
 import ResultList from '../flatlists/ResultsList';
+import { AuthContext } from '../context/AccessTokenContext';
 
-import getPlaylistData from '../api/GetTempPlaylists';
-
+import { SearchForItem } from '../api/SpotifySearchForItem';
+import DropDown from '../dropdown/Dropdown';
 const HomeScreen = () => {
   const { theme } = useContext(ThemeContext);
+  const { accessToken } = useContext(AuthContext);
   const navigation = useNavigation();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState('');
 
-  const [playlists, setPlaylists] = useState([]);
+  const type = "track";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getPlaylistData();
-        setPlaylists(data || []);
-      } catch (error) {
-        console.error('Error fetching playlist data:', error);
-        setPlaylists([]);
-      }
-    };
+  const handleSearch =  async () => {
+    console.log("search:", accessToken);
+    try {
+      const searchResults = await(SearchForItem(accessToken, query, type));
+      console.log('Search Results:', searchResults);
+      setResults(searchResults);
+          //create context for type then clear choice context here
+    } catch (error) {
+      console.error('Search error:', error);
+    }
+  };
 
-    fetchData();
-  }, []);
 
   const styles = StyleSheet.create({
     container: {
@@ -61,10 +63,12 @@ const HomeScreen = () => {
         <Text style={styles.title}>Search for an artist, song, or genre</Text>
         <SearchFilterInput
           placeholder="Search..."
-          value={searchTerm}
-          onChangeText={setSearchTerm}
+          placeholderTextColor={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}
+          value={query}
+          onChangeText={setQuery}
+          onPress={handleSearch}
         />
-        <ResultList data={playlists} imgSize={55} headingSize={16} descriptionSize={14}/>
+        <ResultList data={results} imgSize={55} headingSize={16} descriptionSize={14}/>
         <GetStartedButton />
       </ScrollView>
     </SafeAreaView>
