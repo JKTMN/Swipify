@@ -8,18 +8,24 @@ import StackNavigator from './src/navigation/MainNavigation';
 import { AuthProvider } from './src/context/AccessTokenContext';
 
 import { UserProvider } from './src/context/UserDetailsContext';
+import { TypeProvider } from './src/context/TypeContext';
+import { TracklistProvider } from './src/context/GameTracklist';
 
 
 export default function App() {
   return (
-    <UserProvider>
-      <ThemeProvider>
-        <AuthProvider>
-          <NavigationContainer>
-            <StackNavigator />
-          </NavigationContainer>
-        </AuthProvider>
-      </ThemeProvider>
-    </UserProvider>
+    <TracklistProvider>
+      <TypeProvider>
+        <UserProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <NavigationContainer>
+                <StackNavigator />
+              </NavigationContainer>
+            </AuthProvider>
+          </ThemeProvider>
+        </UserProvider>
+      </TypeProvider>
+    </TracklistProvider>
   );
 }

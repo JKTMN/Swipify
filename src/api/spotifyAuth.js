@@ -16,7 +16,6 @@ const authenticateWithSpotify = async () => {
 
     if (response.type === 'success' && response.url) {
       const code = response.url.split('code=')[1];
-      console.log("Auth code: ", code) //delete
       if (code) {
         const accessToken = await exchangeAuthCodeForAccessToken(code);
         console.log('Access Token:', accessToken); //delete

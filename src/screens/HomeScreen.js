@@ -5,31 +5,32 @@ import ThemeContext from '../context/ThemeContext';
 import GetStartedButton from '../Buttons/GetStartedButton';
 import SearchFilterInput from '../SearchBars/SearchFilterInput';
 import ResultList from '../flatlists/ResultsList';
-import { AuthContext } from '../context/AccessTokenContext';
-
 import { SearchForItem } from '../api/SpotifySearchForItem';
-import DropDown from '../dropdown/Dropdown';
+import { TypeContext } from '../context/TypeContext';
+import { useAccessToken } from '../api/SpotifyUseAccessToken';
+import { TracklistContext } from '../context/GameTracklist';
+import { UserContext } from '../context/UserDetailsContext';
+
 const HomeScreen = () => {
   const { theme } = useContext(ThemeContext);
-  const { accessToken } = useContext(AuthContext);
+  // const { type } = useContext(TypeContext);
   const navigation = useNavigation();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState('');
+  const { saveTracklist } = useContext(TracklistContext);
+  const { market } = useContext(UserContext);
 
-  const type = "track";
+  const accessToken = useAccessToken();
 
   const handleSearch =  async () => {
-    console.log("search:", accessToken);
     try {
-      const searchResults = await(SearchForItem(accessToken, query, type));
-      console.log('Search Results:', searchResults);
+      const searchResults = await(SearchForItem(accessToken, query, market)); //add type back here when/if needed
       setResults(searchResults);
-          //create context for type then clear choice context here
+      saveTracklist(searchResults);
     } catch (error) {
       console.error('Search error:', error);
     }
   };
-
 
   const styles = StyleSheet.create({
     container: {
@@ -69,7 +70,7 @@ const HomeScreen = () => {
           onPress={handleSearch}
         />
         <ResultList data={results} imgSize={55} headingSize={16} descriptionSize={14}/>
-        <GetStartedButton />
+        {results && results.length > 0 && <GetStartedButton />}
       </ScrollView>
     </SafeAreaView>
   );

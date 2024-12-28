@@ -5,6 +5,7 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [userDetails, setUserDetails] = useState(null);
+    const [market, setMarket] = useState(null);
 
     const STORAGE_KEY = '@user_details';
 
@@ -23,6 +24,13 @@ export const UserProvider = ({ children }) => {
         loadUserDetails();
     }, []);
 
+    useEffect(() => {
+        if (userDetails && userDetails.country) {
+            const market = userDetails.country;
+            setMarket(market);
+        }
+    }, [userDetails]);
+
     const saveUserDetails = async (newDetails) => {
         try {
             await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newDetails));
@@ -36,13 +44,14 @@ export const UserProvider = ({ children }) => {
         try {
             await AsyncStorage.removeItem(STORAGE_KEY);
             setUserDetails(null);
+            setMarket(null);
         } catch (error) {
             console.error('Failed to clear user details:', error);
         }
     };
 
     return (
-        <UserContext.Provider value={{ userDetails, saveUserDetails, clearUserDetails }}>
+        <UserContext.Provider value={{ userDetails, market, saveUserDetails, clearUserDetails }}>
             {children}
         </UserContext.Provider>
     );

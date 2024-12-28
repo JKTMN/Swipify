@@ -1,9 +1,10 @@
-import { authenticateWithSpotify } from '../api/spotifyAuth';
+const SearchForItem = async (accessToken, query, market) => {
 
-const SearchForItem = async (accessToken, query, type) => {
+    const type = 'track';
+
     if (!accessToken) {
-        alert('Access token is required');
-        await authenticateWithSpotify();
+        alert('No valid access token available, please log in.');
+        return;
     }
 
     const headers = {
@@ -13,7 +14,7 @@ const SearchForItem = async (accessToken, query, type) => {
     const searchParams = new URLSearchParams({
         q: query,
         type: type,
-        market: 'GB', // Change this to user's country code
+        market: market,
         limit: 5, // Adjust limit as needed
     }).toString();
 
@@ -24,7 +25,6 @@ const SearchForItem = async (accessToken, query, type) => {
         });
 
         const data = await response.json();
-        console.log(data);
 
         if (response.ok) {
             if (type === "artist") {
@@ -37,7 +37,6 @@ const SearchForItem = async (accessToken, query, type) => {
                 }));
                 return artists || [];
             } else if (type === "track") {
-                console.log(data);
                 const tracks = data.tracks?.items.map((track) => ({
                     uri: track.uri,
                     id: track.id,

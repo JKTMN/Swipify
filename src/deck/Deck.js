@@ -31,9 +31,11 @@ const Deck = () => {
     }
 });
 
+
   return (
     <View style={styles.deckContainer}>
         <Swiper
+        // variables containing components can be passed in the cards array
             cards={['Nothing Great about Britain', 'Noddy', 'Bullet from a gun', 'Six Paths']}
             renderCard={(card) => {
                 return (

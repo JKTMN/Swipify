@@ -1,6 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SelectCountry } from 'react-native-element-dropdown';
+import { TypeContext } from '../context/TypeContext';
 
 const data = [
     { label: 'Artist', value: 'artist' },
@@ -9,8 +10,13 @@ const data = [
 ];
 
 const DropDown = () => {
-    const [choice, setChoice] = useState(null);
-    //once context for choice use add here to add choice to context
+    const [type, setType] = useState('artist');
+
+    const { saveType } = useContext(TypeContext);
+
+    useEffect(() => {
+      saveType(type);
+    },[type]);    
 
     const styles = StyleSheet.create ({
         dropdown: {
@@ -35,14 +41,14 @@ const DropDown = () => {
         selectedTextStyle={styles.selectedText}
         placeholderStyle={styles.placeholder}
         maxHeight={200}
-        value={choice}
+        value={type}
         data={data}
         valueField="value"
         labelField="label"
         placeholder="Artist"
         searchPlaceholder='Search...'
         onChange = {e => {
-            setChoice(e.value);
+            setType(e.value);
         }}
         />
     );

@@ -27,7 +27,7 @@ const exchangeAuthCodeForAccessToken = async (authCode) => {
     const data = await response.json();
     if (response.ok) {
       await SecureStore.setItemAsync('spotifyAccessToken', data.access_token);
-
+      await SecureStore.setItemAsync('spotifyRefreshToken', data.refresh_token);
       return data.access_token;
     } else {
       console.error('Error fetching access token:', data);
