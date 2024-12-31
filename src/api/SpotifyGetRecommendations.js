@@ -43,10 +43,15 @@ const GetRecommendations = async (props) => {
         if (response.ok) {
             const tracks = data.tracks.item.map(({track}) => ({
                 uri: data.tracks.uri,
+                id: data.tracks.id,
+                type: data.tracks.type,
                 preview_url: data.tracks.preview_url,
                 artist_name: data.tracks.artists.name,
                 artist_id: data.tracks.artists.id,
+                artist_uri: data.tracks.artists.uri,
                 album_image: data.tracks.album.images,
+                album_uri: data.tracks.album.uri,
+                album_name: data.tracks.album.name,
             }));
             return tracks;
         } else {

@@ -53,6 +53,10 @@ const HomeScreen = () => {
       fontSize: 16,
       color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
     },
+    message: {
+      color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+      marginTop: '50%',
+    },
   });
 
   return (
@@ -70,7 +74,7 @@ const HomeScreen = () => {
           onPress={handleSearch}
         />
         <ResultList data={results} imgSize={55} headingSize={16} descriptionSize={14}/>
-        {results && results.length > 0 && <GetStartedButton />}
+        {results && results.length > 0 ? (<GetStartedButton />) : (<Text style={styles.message}>Search for a song to get started!</Text>)}
       </ScrollView>
     </SafeAreaView>
   );
