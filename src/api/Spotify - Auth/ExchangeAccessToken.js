@@ -1,7 +1,7 @@
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '@env';
 import * as SecureStore from 'expo-secure-store';
 
-import { REDIRECT_URI } from '../api/CreateRedirectURI';
+import { REDIRECT_URI } from '../Spotify - Util/CreateRedirectURI';
 
 const exchangeAuthCodeForAccessToken = async (authCode) => {
 

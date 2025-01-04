@@ -5,30 +5,52 @@ import ThemeContext from '../context/ThemeContext';
 import GetStartedButton from '../Buttons/GetStartedButton';
 import SearchFilterInput from '../SearchBars/SearchFilterInput';
 import ResultList from '../flatlists/ResultsList';
-import { SearchForItem } from '../api/SpotifySearchForItem';
-import { TypeContext } from '../context/TypeContext';
-import { useAccessToken } from '../api/SpotifyUseAccessToken';
+import { SearchForItem } from '../api/Spotify - Search/SpotifySearchForItem';
 import { TracklistContext } from '../context/GameTracklist';
 import { UserContext } from '../context/UserDetailsContext';
 
+import { handleStartGame } from '../api/SpotifyGetRecommendations';
+import { useAccessToken } from '../api/Spotify - Util/SpotifyUseAccessToken';
+
 const HomeScreen = () => {
   const { theme } = useContext(ThemeContext);
-  // const { type } = useContext(TypeContext);
   const navigation = useNavigation();
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState('');
-  const { saveTracklist } = useContext(TracklistContext);
+  const [results, setResults] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const { saveTracklist, trackIsrcs, saveGameTrackIds } = useContext(TracklistContext);
   const { market } = useContext(UserContext);
 
   const accessToken = useAccessToken();
 
-  const handleSearch =  async () => {
+  const handleSearch = async () => {
     try {
-      const searchResults = await(SearchForItem(accessToken, query, market)); //add type back here when/if needed
+      const searchResults = await SearchForItem(accessToken, query, market);
       setResults(searchResults);
-      saveTracklist(searchResults);
+      setSelectedIndex(null);
+      console.log("Search results:", searchResults);
+
+      if (selectedIndex !== null) {
+        saveTracklist(searchResults[selectedIndex]);
+      } else {
+        console.log('No item selected');
+      }
     } catch (error) {
       console.error('Search error:', error);
+    }
+  };
+
+  const handleItemPress = (index) => {
+    setSelectedIndex(index);
+  };
+
+  const startGame = async () => {
+    try {
+      if (selectedIndex !== null) {
+        await handleStartGame(accessToken, trackIsrcs, saveGameTrackIds, navigation);
+      }
+    } catch (error) {
+      console.error('Error starting game:', error);
     }
   };
 
@@ -73,8 +95,19 @@ const HomeScreen = () => {
           onChangeText={setQuery}
           onPress={handleSearch}
         />
-        <ResultList data={results} imgSize={55} headingSize={16} descriptionSize={14}/>
-        {results && results.length > 0 ? (<GetStartedButton />) : (<Text style={styles.message}>Search for a song to get started!</Text>)}
+        <ResultList
+          data={results}
+          imgSize={55}
+          headingSize={16}
+          descriptionSize={14}
+          selectedIndex={selectedIndex}
+          onPress={handleItemPress}
+        />
+        {results && results.length > 0 ? (
+          <GetStartedButton onPress={startGame} />
+        ) : (
+          <Text style={styles.message}>Search for a song to get started!</Text>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

@@ -10,8 +10,6 @@ import AccountScreen from '../screens/AccountScreen';
 import ThemeContext from '../context/ThemeContext';
 import GameScreen from '../screens/GameScreen';
 import PlaylistScreen from '../screens/PlaylistScreen';
-import SignupScreen from '../screens/SignupScreen';
-import LoginScreen from '../screens/LoginScreen';
 import EditPlaylistDetailsScreen from '../screens/EditPlaylistDetails';
 import TestScreen from '../screens/testscreen';
 

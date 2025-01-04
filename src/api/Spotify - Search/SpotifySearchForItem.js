@@ -1,5 +1,4 @@
 const SearchForItem = async (accessToken, query, market) => {
-
     const type = 'track';
 
     if (!accessToken) {
@@ -15,7 +14,7 @@ const SearchForItem = async (accessToken, query, market) => {
         q: query,
         type: type,
         market: market,
-        limit: 5, // Adjust limit as needed
+        limit: 5,
     }).toString();
 
     try {
@@ -27,30 +26,18 @@ const SearchForItem = async (accessToken, query, market) => {
         const data = await response.json();
 
         if (response.ok) {
-            if (type === "artist") {
-                const artists = data.artists?.items.map((artist) => ({
-                    uri: artist.uri,
-                    id: artist.id,
-                    name: artist.name,
-                    description: artist.genres,
-                    image: artist.images[0].url,
-                }));
-                return artists || [];
-            } else if (type === "track") {
-                const tracks = data.tracks?.items.map((track) => ({
+            const tracks = data.tracks?.items.map((track) => {
+                return {
                     uri: track.uri,
                     id: track.id,
-                    title: track.name,
+                    name: track.name,
                     description: track.album.name,
-                    artists: track.artists.map((artist) => artist.name),
-                    image: track.album.images[0].url,
-                    preview_url: track.preview_url,
-                }));
-                return tracks || [];
-            } else {
-                console.error("Error: Invalid type provided.");
-                throw new Error("Failed to fetch items: invalid type.");
-            }
+                    artist: track.artists[0]?.name,
+                    image: track.album.images[0]?.url,
+                };
+            });
+
+            return tracks || [];
         } else {
             console.error("Error fetching search item:", data);
             throw new Error(data.error?.message || "Failed to get search item.");

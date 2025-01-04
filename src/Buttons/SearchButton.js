@@ -7,8 +7,8 @@ const SearchButton = ({onPress}) => {
 
     const styles = StyleSheet.create ({
         searchButton: {
-            backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
-            borderColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+            backgroundColor: '#1DB954',
+            borderColor: '#1DB954',
             borderWidth: 1,
             borderRadius: 8,
             justifyContent: 'center',

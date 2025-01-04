@@ -10,3 +10,27 @@ SearchForItem > GetArtistsTopTracks > GetRecommendations(gameResults) > CreatePl
               > (genre) > GetRecommendations(gameResults) > CreatePlaylist > AddCoverArt > AddItems
 
 at end of game send uris to edit details screen
+
+
+SearchForItem > tracklist > extract isrc 
+              >> handleGameRecomendations> get MBid from isrc
+              >> getReccomendations > get mbid for reccomendations from isrc
+              >> get isrcs from mbids
+              >> get trackId from isrcs
+
+
+
+new flow: search for track > 
+        extract artist > 
+        search artists >
+         get genres from artists > 
+         search genres > 
+         get artists and their genres > 
+         use new genres for songs
+        >> usings songs for game>> 
+        swiped right> get artists and their genres > 
+        search genres > 
+        get songs > 
+        check if swiped left in songs > 
+        populate playlist
+

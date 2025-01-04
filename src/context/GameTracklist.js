@@ -4,7 +4,8 @@ export const TracklistContext = createContext();
 
 export const TracklistProvider = ({ children }) => {
     const [tracklist, setTracklist] = useState([]);
-    const [trackUris, setTrackUris] = useState([]);
+    const [trackIds, setTrackIds] = useState([]);
+    const [gameTrackIds, setGameTrackIds] = useState()
 
     const saveTracklist = (newTracklist) => {
         setTracklist(newTracklist);
@@ -14,23 +15,24 @@ export const TracklistProvider = ({ children }) => {
         setTracklist([]);
     };
 
-    const clearTrackUris = () => {
-        setTrackUris([]);
+    const clearTrackIds = () => {
+        setTrackIds([]);
     };
 
     useEffect(() => {
         if (tracklist.length === 0) {
-            setTrackUris([]);
+            setTrackIds([]);
         } else {
-            const trackUris = tracklist.map((track) => track.uri) || [];
-            setTrackUris(trackUris);
+            const newTrackIds = tracklist.map((track) => track.id);
+            setTrackIds(newTrackIds);
+
+            console.log("Updated track IDs:", newTrackIds);
         }
-        console.log("uris:", trackUris);
     }, [tracklist]);
 
     return (
-        <TracklistContext.Provider value={{tracklist, trackUris, saveTracklist, clearTracklist}}>
-            { children }
+        <TracklistContext.Provider value={{ tracklist, trackIds, saveTracklist, clearTracklist }}>
+            {children}
         </TracklistContext.Provider>
     );
 };

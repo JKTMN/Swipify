@@ -6,11 +6,11 @@ import ResultList from '../flatlists/ResultsList';
 import CreatePlaylistButton from '../Buttons/CreatePlaylistButton';
 import getPlaylistData from '../api/GetTempPlaylists';
 import ImageUploader, { selectedImageB64 } from '../imageUploader/ImageUploader';
-import { CreatePlaylist } from '../api/SpotifyCreatePlaylist';
-import { AddCoverImage } from '../api/SpotifyAddCustomCover';
-import { AddItemsToPlaylist } from '../api/SpotifyAddItemsToPlaylist';
+import { CreatePlaylist } from '../api/Spotify - Playlist/SpotifyCreatePlaylist';
+import { AddCoverImage } from '../api/Spotify - Playlist/SpotifyAddCustomCover';
+import { AddItemsToPlaylist } from '../api/Spotify - Playlist/SpotifyAddItemsToPlaylist';
 import { UserContext } from '../context/UserDetailsContext';
-import { useAccessToken } from '../api/SpotifyUseAccessToken';
+import { useAccessToken } from '../api/Spotify - Util/SpotifyUseAccessToken';
 
 
 const EditPlaylistDetailsScreen = () => {

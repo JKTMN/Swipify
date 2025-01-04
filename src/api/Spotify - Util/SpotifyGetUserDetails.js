@@ -19,13 +19,14 @@ const GetUserDetails = async (accessToken) => {
         const data = await response.json();
 
         if (response.ok) {
-            console.log(data);
             const userDetails = {
                 uri: data.uri,
                 userId: data.id,
                 displayName: data.display_name,
-                images: data.images[0],
+                images: data.images[0]?.url,
                 country: data.country,
+                product: data.product,
+                followers: data.followers.total,
             };
 
             return userDetails;

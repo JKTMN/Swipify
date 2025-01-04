@@ -1,19 +1,43 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useColorScheme, Button } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, useColorScheme } from 'react-native';
 import ThemeContext from '../context/ThemeContext';
 import LinkAccountButton from '../Buttons/LinkAccountButton';
-import authenticateWithSpotify from '../api/spotifyAuth';
-import { Link } from '@react-navigation/native';
-import { GetUserDetails } from '../api/SpotifyGetUserDetails';
+import authenticateWithSpotify from '../api/Spotify - Auth/spotifyAuth';
+import { useUser } from '../context/UserDetailsContext';
+import { AuthContext } from '../context/AccessTokenContext';
+import { GetUserDetails } from '../api/Spotify - Util/SpotifyGetUserDetails';
+import { SelectCountry } from 'react-native-element-dropdown';
 
 const AccountScreen = () => {
   const systemTheme = useColorScheme();
   const { theme, toggleTheme, useSystemTheme } = useContext(ThemeContext);
+  const { accessToken } = useContext(AuthContext);
+  const { saveUserDetails, renderProfile } = useUser();
+
   const [authCode, setAuthCode] = useState(null);
 
-  const handleToggleTheme = () => {
-    const newTheme = theme === 'light' ? '#2B2B2B' : '#FCFCFC';
-    toggleTheme(newTheme);
+  const handleLinkAccount = async () => {
+    authenticateWithSpotify();
+    try {
+      const userDetails = await GetUserDetails(accessToken);
+      saveUserDetails(userDetails);
+    } catch (err) {
+      console.error('Error in handleGetUserDetails:', err);
+    }
+  };
+
+  const themeOptions = [
+    { label: 'Light Theme', value: 'light' },
+    { label: 'Dark Theme', value: 'dark' },
+    { label: 'System Theme', value: 'system' },
+  ];
+
+  const handleThemeChange = (selected) => {
+    if (selected.value === 'system') {
+      useSystemTheme();
+    } else {
+      toggleTheme(selected.value);
+    }
   };
 
   const styles = StyleSheet.create({
@@ -23,57 +47,75 @@ const AccountScreen = () => {
     },
     content: {
       flex: 1,
-      justifyContent: 'center',
       alignItems: 'center',
       padding: 20,
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
-      marginBottom: 10,
-    },
-    buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-    },
-    button: {
-      marginTop: 10,
-      paddingVertical: 5,
-      paddingHorizontal: 10,
-      backgroundColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
-      height: 30,
-      borderRadius: 15,
     },
     loginContainer: {
-      flex: 1,
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       alignItems: 'center',
-      padding: 20,
+      paddingVertical: 20,
+    },
+    heading: {
+      color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+      fontSize: 20,
+      textAlign: 'left',
+      fontWeight: 'bold',
+      marginBottom: 20,
+    },
+    dropdown: {
+      marginHorizontal: 10,
+      height: 30,
+      width: 150,
+      backgroundColor: '#1DB954',
+      borderRadius: 22,
+      paddingHorizontal: 8,
+      marginLeft: 50,
+    },
+    selectedText: {
+      fontSize: 16,
+      color: '#2B2B2B',
+    },
+    placeholderText: {
+      fontSize: 16,
+      color: '#FCFCFC',
+    },
+    dropdownMenu: {
+      backgroundColor: '#1DB954',
+      borderRadius: 10,
+      padding: 10,
+    },
+    dropdownContainer: {
+      marginVertical: 20,
+      flexDirection: 'row',
     },
   });
 
   return (
     <SafeAreaView style={styles.container}>
+      {renderProfile(theme)}
       <View style={styles.content}>
-        <Text style={styles.title}>Welcome to Account Screen</Text>
-        <Text>Toggle Theme</Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => toggleTheme('light')}>
-            <Text>Light Theme</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => toggleTheme('dark')}>
-            <Text>Dark Theme</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => useSystemTheme()}>
-            <Text>System Theme</Text>
-          </TouchableOpacity>
-        </View>
-
         <View style={styles.loginContainer}>
-          <LinkAccountButton onPress={authenticateWithSpotify} />
-          <LinkAccountButton onPress={GetUserDetails} />
+          <Text style={styles.heading}>Press the button below to link your Spotify account!</Text>
+          <LinkAccountButton onPress={handleLinkAccount} />
           {authCode && <Text>Authorization Code: {authCode}</Text>}
+        </View>
+        <View>
+          <View style={styles.dropdownContainer}>
+            <Text style={styles.heading}>Toggle theme:</Text>
+            <SelectCountry
+              style={styles.dropdown}
+              selectedTextStyle={styles.selectedText}
+              placeholderStyle={styles.placeholderText}
+              maxHeight={200}
+              valueField="value"
+              labelField="label"
+              data={themeOptions}
+              placeholder="Select Theme"
+              searchPlaceholder="Search..."
+              dropdownStyle={styles.dropdownMenu}
+              onChange={handleThemeChange}
+            />
+          </View>
         </View>
       </View>
     </SafeAreaView>

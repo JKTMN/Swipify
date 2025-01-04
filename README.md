@@ -7,7 +7,7 @@ A react native app which gamifies Spotify playlist creation
 - [x] Implement saving search results to global list
     - [ ] check to see if song comes with preview url - they do not
     - [ ] get recommendations based from search
-    - [ ] display on cards using web view
+    - [x] display on cards using web view
     - [x] store results into global list
     - [ ] get recommendations based from results
     - [ ] use recommendations uris for playlist creation

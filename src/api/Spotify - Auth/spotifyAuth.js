@@ -1,10 +1,11 @@
 import * as WebBrowser from 'expo-web-browser';
 import { SPOTIFY_CLIENT_ID, SCOPES } from '@env';
 import { exchangeAuthCodeForAccessToken } from './ExchangeAccessToken';
-import { REDIRECT_URI } from '../api/CreateRedirectURI';
+import { REDIRECT_URI } from '../Spotify - Util/CreateRedirectURI';
 
 const authenticateWithSpotify = async () => {
   try {
+    console.log(REDIRECT_URI);
     const authUrl = `https://accounts.spotify.com/authorize?${new URLSearchParams({
       response_type: 'code',
       client_id: SPOTIFY_CLIENT_ID,

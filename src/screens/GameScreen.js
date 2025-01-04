@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 
 import ThemeContext from '../context/ThemeContext';
 
 import Deck from '../deck/Deck';
 import SwipeButton from '../Buttons/SwipeButton';
 
+import { TracklistContext } from '../context/GameTracklist';
+
 const GameScreen = () => {
   const { theme } = useContext(ThemeContext);
-
+  const { gameTrackIds } = useContext(TracklistContext);
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -19,11 +21,19 @@ const GameScreen = () => {
       width: '100%',
       justifyContent: 'space-evenly',
     },
+    imgContainer: {
+      height: 100,
+      width: '100%',
+      backgroundColor: 'green',
+    },
   });
 
   return (
     <SafeAreaView style={styles.container}>
-        <Deck />
+      <View style={styles.imgContainer}>
+        <Image source={''}></Image>
+      </View>
+        <Deck trackIds={gameTrackIds}/>
         <View style={styles.btnContainer}>
           <SwipeButton text={'No'} colour={'red'} />
           <SwipeButton text={'Maybe'} colour={'orange'} />

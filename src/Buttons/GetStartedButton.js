@@ -2,14 +2,9 @@ import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const GetStartedButton = () => {
-    const navigation = useNavigation();
-    const goToGameScreen = () => {
-        navigation.navigate('GameScreen');
-      };
-
+const GetStartedButton = ({onPress}) => {
     return (
-        <TouchableOpacity style={styles.button} onPress={goToGameScreen}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
             <Text style={styles.text}>Get Started</Text>
         </TouchableOpacity>
     );
