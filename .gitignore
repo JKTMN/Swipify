@@ -37,4 +37,3 @@ yarn-error.*
 
 assets/TempPlaylistImages
 .env
-src/Screens/testScreen.js

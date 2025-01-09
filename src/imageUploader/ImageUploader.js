@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -43,9 +43,9 @@ const ImageUploader = () => {
 
       {selectedImageB64 && (
         <View style={{ marginTop: 10 }}>
-          <Alert>
+          <Text>
             Base64 Length: {selectedImageB64.length}
-          </Alert>
+          </Text>
         </View>
       )}
     </TouchableOpacity>

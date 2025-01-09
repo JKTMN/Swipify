@@ -13,7 +13,7 @@ const LinkAccountButton = ({onPress}) => {
 
 const styles = StyleSheet.create ({
     button: {
-        backgroundColor: '#1DB954',
+        backgroundColor: '#1ED750',
         paddingVertical: 12,
         paddingHorizontal: 20,
         borderRadius: 8,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create ({
         marginHorizontal: 10,
     },
     text: {
-        color: '#FCFCFC',
+        color: '#2B2B2B',
         fontSize: 16,
         fontWeight: 'bold',
     },

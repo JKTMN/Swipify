@@ -1,10 +1,12 @@
 import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const GetStartedButton = ({onPress}) => {
+const LogoutButton = ({onPress}) => {
+
     return (
         <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.text}>Get Started</Text>
+            <Text style={styles.text}>Log Out</Text>
         </TouchableOpacity>
     );
 };
@@ -12,13 +14,12 @@ const GetStartedButton = ({onPress}) => {
 const styles = StyleSheet.create ({
     button: {
         backgroundColor: '#1ED750',
-        paddingVertical: 15,
-        paddingHorizontal: 100,
+        paddingVertical: 12,
+        paddingHorizontal: 20,
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
-        maxWidth: 300,
+        marginHorizontal: 10,
     },
     text: {
         color: '#2B2B2B',
@@ -27,4 +28,4 @@ const styles = StyleSheet.create ({
     },
 });
 
-export default GetStartedButton;
+export default LogoutButton;

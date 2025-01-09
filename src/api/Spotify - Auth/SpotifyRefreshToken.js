@@ -2,10 +2,9 @@ import { SPOTIFY_CLIENT_ID } from '@env';
 import * as SecureStore from 'expo-secure-store';
 
 const SpotifyRefreshToken = async (refreshToken) => {
-
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-      };
+    };
 
     const body = new URLSearchParams({
         grant_type: 'refresh_token',
@@ -21,16 +20,23 @@ const SpotifyRefreshToken = async (refreshToken) => {
         });
 
         const data = await response.json();
+
         if (response.ok) {
+            const currentTime = Date.now();
+            const expiresIn = data.expires_in || 3600;
+            const expiryTime = currentTime + expiresIn * 1000;
+
             await SecureStore.setItemAsync('spotifyAccessToken', data.access_token);
-            await SecureStore.setItemAsync('spotifyRefreshToken', data.refresh_token);
+            await SecureStore.setItemAsync('spotifyRefreshToken', refreshToken);
+            await SecureStore.setItemAsync('tokenExpiryTime', expiryTime.toString());
+
             return data.access_token;
         } else {
-            console.error('Error fetching access token:', data);
-            throw new Error('Failed to exchange refresh token for access token');
+            console.error('Error refreshing access token:', data);
+            throw new Error('Failed to refresh access token');
         }
     } catch (error) {
-        console.error('Error during token exchange:', error);
+        console.error('Error during token refresh:', error);
         throw error;
     }
 };

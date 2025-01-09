@@ -54,7 +54,7 @@ export const UserProvider = ({ children }) => {
         if (userDetails) {
             return (
                 <View style={[styles.profileContainer, { borderBottomColor: theme === 'dark' ? '#444' : '#ddd' }]}>
-                    <Image source={{ uri: userDetails.images }} style={styles.profileImage} />
+                    <Image source={{ uri: userDetails.images }} style={[styles.profileImage, {borderColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}]} />
                     <Text style={[styles.displayName, { color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B' }]}>
                         {userDetails.displayName}
                     </Text>
@@ -94,10 +94,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     profileImage: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
+        width: 140,
+        height: 140,
+        borderRadius: 70,
         marginBottom: 10,
+        borderWidth: 2,
     },
     displayName: {
         fontSize: 20,
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
     },
     product: {
         fontSize: 16,
-        color: '#1DB954',
+        color: '#1ED750',
         fontWeight: 'bold',
     },
     messageContainer: {

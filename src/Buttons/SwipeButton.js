@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
 
-const SwipeButton = (props) => {
+const SwipeButton = ({text, colour, onPress}) => {
 
-    const { text, colour } = props;
+    // const { text, colour, onPress } = props;
 
     const styles = StyleSheet.create ({
         button: {
@@ -15,6 +15,7 @@ const SwipeButton = (props) => {
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 20,
+            backgroundColor: 'transparent',
         },
         text: {
             color: colour,
@@ -24,7 +25,7 @@ const SwipeButton = (props) => {
     });
 
     return (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
             <Text style={styles.text}>{text}</Text>
         </TouchableOpacity>
     );

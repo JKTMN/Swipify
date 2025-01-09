@@ -7,7 +7,7 @@ const ResultItem = ({ name, image, description, imgSize, headingSize, descriptio
 
   const styles = StyleSheet.create({
     listItemContainer: {
-      width: '95%',
+      width: '100%',
       alignSelf: 'center',
       flexDirection: 'column',
       padding: 5,
@@ -15,6 +15,7 @@ const ResultItem = ({ name, image, description, imgSize, headingSize, descriptio
       marginTop: 2.5,
       backgroundColor: isSelected ? (theme === 'dark' ? '#444' : '#ddd') : 'transparent',
       borderRadius: 5,
+      minWidth: '100%',
     },
     row: {
       flexDirection: 'row',
@@ -30,13 +31,13 @@ const ResultItem = ({ name, image, description, imgSize, headingSize, descriptio
       flexDirection: 'column',
       justifyContent: 'center',
     },
-    heading: {
+    trackName: {
       fontSize: headingSize,
       fontWeight: 'bold',
       color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
       marginBottom: 5,
     },
-    description: {
+    artist: {
       fontSize: descriptionSize,
       color: theme === 'dark' ? '#F5F5F5' : '#363636',
     },
@@ -48,13 +49,14 @@ const ResultItem = ({ name, image, description, imgSize, headingSize, descriptio
         <View style={styles.row}>
           <Image source={{ uri: image }} style={styles.image} />
           <View style={styles.textContainer}>
-            <Text style={styles.heading}>{name} - {artist}</Text>
-            <Text style={styles.description}>{description}</Text>
+            <Text style={styles.trackName}>{name}</Text>
+            <Text style={styles.artist}>{artist}</Text>
           </View>
         </View>
       </View>
     </TouchableOpacity>
   );
 };
+
 
 export default ResultItem;

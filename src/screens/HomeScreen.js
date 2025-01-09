@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ThemeContext from '../context/ThemeContext';
 import GetStartedButton from '../Buttons/GetStartedButton';
@@ -8,9 +8,8 @@ import ResultList from '../flatlists/ResultsList';
 import { SearchForItem } from '../api/Spotify - Search/SpotifySearchForItem';
 import { TracklistContext } from '../context/GameTracklist';
 import { UserContext } from '../context/UserDetailsContext';
-
-import { handleStartGame } from '../api/SpotifyGetRecommendations';
-import { useAccessToken } from '../api/Spotify - Util/SpotifyUseAccessToken';
+import { handleStartGame } from '../api/Spotify - Util/HandleRecommendations';
+import { AuthContext } from '../context/AccessTokenContext';
 
 const HomeScreen = () => {
   const { theme } = useContext(ThemeContext);
@@ -18,10 +17,10 @@ const HomeScreen = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const { saveTracklist, trackIsrcs, saveGameTrackIds } = useContext(TracklistContext);
+  const { saveSelectedTrack, selectedTrackId, selectedTrack, gameTrackIds, saveGameTrackIds,} = useContext(TracklistContext);
   const { market } = useContext(UserContext);
+  const { accessToken } = useContext(AuthContext);
 
-  const accessToken = useAccessToken();
 
   const handleSearch = async () => {
     try {
@@ -31,7 +30,7 @@ const HomeScreen = () => {
       console.log("Search results:", searchResults);
 
       if (selectedIndex !== null) {
-        saveTracklist(searchResults[selectedIndex]);
+        saveSelectedTrack(searchResults[selectedIndex]);
       } else {
         console.log('No item selected');
       }
@@ -42,17 +41,31 @@ const HomeScreen = () => {
 
   const handleItemPress = (index) => {
     setSelectedIndex(index);
+    saveSelectedTrack(results[index]);
   };
 
   const startGame = async () => {
     try {
       if (selectedIndex !== null) {
-        await handleStartGame(accessToken, trackIsrcs, saveGameTrackIds, navigation);
+        await handleStartGame(
+          accessToken, 
+          selectedTrack.artist,
+          navigation, 
+          market, 
+          saveGameTrackIds
+        );
       }
     } catch (error) {
       console.error('Error starting game:', error);
     }
   };
+  
+
+  useEffect(() => {
+    if (selectedTrack && selectedTrack.id) {
+      console.log("Selected Track ID:", selectedTrack.id);
+    }
+  }, [selectedTrack]); // delete when not needed for testing
 
   const styles = StyleSheet.create({
     container: {
@@ -70,6 +83,7 @@ const HomeScreen = () => {
       color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
       marginBottom: 10,
       marginTop: 30,
+      alignSelf: 'center',
     },
     subtitle: {
       fontSize: 16,
@@ -78,15 +92,28 @@ const HomeScreen = () => {
     message: {
       color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
       marginTop: '50%',
+      fontSize: 20,
+      alignSelf: 'center',
+    },
+    imgContainer: {
+      padding: 10,
+      maxHeight: 80,
+      width: '100%',
+      marginBottom: 40,
+    },
+    img: {
+      marginTop: 10,
+      width: '100%',
+      maxHeight: '100',
+    },
+    BtnContainer: {
+      alignItems: 'center',
     },
   });
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView>
         <Text style={styles.title}>Search for an artist, song, or genre</Text>
         <SearchFilterInput
           placeholder="Search..."
@@ -104,7 +131,7 @@ const HomeScreen = () => {
           onPress={handleItemPress}
         />
         {results && results.length > 0 ? (
-          <GetStartedButton onPress={startGame} />
+          <View style={styles.BtnContainer}><GetStartedButton onPress={startGame} /></View>
         ) : (
           <Text style={styles.message}>Search for a song to get started!</Text>
         )}
