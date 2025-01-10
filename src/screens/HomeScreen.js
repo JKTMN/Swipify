@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ThemeContext from '../context/ThemeContext';
 import GetStartedButton from '../Buttons/GetStartedButton';
@@ -27,12 +27,11 @@ const HomeScreen = () => {
       const searchResults = await SearchForItem(accessToken, query, market);
       setResults(searchResults);
       setSelectedIndex(null);
-      console.log("Search results:", searchResults);
 
       if (selectedIndex !== null) {
         saveSelectedTrack(searchResults[selectedIndex]);
       } else {
-        console.log('No item selected');
+        alert('No item selected');
       }
     } catch (error) {
       console.error('Search error:', error);
@@ -60,12 +59,6 @@ const HomeScreen = () => {
     }
   };
   
-
-  useEffect(() => {
-    if (selectedTrack && selectedTrack.id) {
-      console.log("Selected Track ID:", selectedTrack.id);
-    }
-  }, [selectedTrack]); // delete when not needed for testing
 
   const styles = StyleSheet.create({
     container: {

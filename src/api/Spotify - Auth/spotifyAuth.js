@@ -5,7 +5,6 @@ import { REDIRECT_URI } from '../Spotify - Util/CreateRedirectURI';
 
 const authenticateWithSpotify = async () => {
   try {
-    console.log(REDIRECT_URI);
     const authUrl = `https://accounts.spotify.com/authorize?${new URLSearchParams({
       response_type: 'code',
       client_id: SPOTIFY_CLIENT_ID,
@@ -19,7 +18,6 @@ const authenticateWithSpotify = async () => {
       const code = response.url.split('code=')[1];
       if (code) {
         const accessToken = await exchangeAuthCodeForAccessToken(code);
-        console.log('Access Token:', accessToken); //delete
       }
     } else {
       console.error('OAuth failed or was canceled');

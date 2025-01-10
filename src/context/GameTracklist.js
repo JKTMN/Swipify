@@ -22,7 +22,6 @@ export const TracklistProvider = ({ children }) => {
         setLikedSongs((prevLikedSongs) => {
             if (!prevLikedSongs.includes(gameLikedSong)) {
                 const updatedLikedSongs = [...prevLikedSongs, gameLikedSong];
-                console.log("Liked songs updated:", updatedLikedSongs);
                 return updatedLikedSongs;
             }
             return prevLikedSongs;
@@ -33,7 +32,6 @@ export const TracklistProvider = ({ children }) => {
         setDislikedSongs((prevDislikedSongs) => {
             if (!prevDislikedSongs.includes(gameDislikedSong)) {
                 const updatedDislikedSongs = [...prevDislikedSongs, gameDislikedSong];
-                console.log("Disliked songs updated:", updatedDislikedSongs);
                 return updatedDislikedSongs;
             }
             return prevDislikedSongs;
@@ -72,7 +70,6 @@ export const TracklistProvider = ({ children }) => {
     useEffect(() => {
         if (selectedTrack) {
             setSelectedTrackId([selectedTrack.id]);
-            console.log("Updated track ID:", selectedTrack.id);
         } else {
             setSelectedTrackId('');
         }

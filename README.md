@@ -11,7 +11,7 @@ A react native app which gamifies Spotify playlist creation
     - [x] get recommendations based from results
     - [x] use recommendations uris for playlist creation
     - [x] Handle removing items from final results
-- [ ] compress image ready to be uploaded to playlist cover art
+- [x] compress image ready to be uploaded to playlist cover art
 - [x] remove dropdown for type :skull: (less needs to be implemented)
     - [x] Add a new search button
 - [x] once playlist is created, store details including tracks in global array
@@ -22,3 +22,4 @@ A react native app which gamifies Spotify playlist creation
 - [x] ensure market is set correctly for each api call 
 - [x] Handle checking if disliked songs are in final results and remove them
 - [x] Handle removing track from disliked song if user went back and reliked the song
+- [ ] Remove scroll from game card

@@ -10,6 +10,7 @@ const AddItemsToPlaylist = async (props) => {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
     };
+    
 
     const body = JSON.stringify({
         uris: uris,

@@ -24,7 +24,6 @@ const SearchForItem = async (accessToken, query, market) => {
         });
 
         const data = await response.json();
-        // console.log(JSON.stringify(data, null, 2));
 
         if (response.ok) {
             const tracks = data.tracks?.items.map((track) => {

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 
-const ImageUploader = () => {
+const ImageUploader = ({ onImageSelect }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageB64, setSelectedImageB64] = useState(null);
 
@@ -18,15 +19,61 @@ const ImageUploader = () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsEditing: true,
-      aspect: [1, 1],
       quality: 1,
-      base64: true,
+      base64: false,
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
-      setSelectedImageB64(result.assets[0].base64);
+      const originalUri = result.assets[0].uri;
+
+      const compressedImage = await compressAndResizeImageToBase64(originalUri);
+
+      if (compressedImage) {
+        setSelectedImage(compressedImage.uri);
+        setSelectedImageB64(compressedImage.base64);
+        onImageSelect(compressedImage.base64);
+      } else {
+        alert('Compression Failed', 'Unable to compress the image to under 100KB.');
+      }
     }
+  };
+
+  const compressAndResizeImageToBase64 = async (uri) => {
+    const targetSize = 100 * 1024;
+    let compressQuality = 0.8;
+    let resizedImage = null;
+
+    try {
+      resizedImage = await ImageManipulator.manipulateAsync(
+        uri,
+        [{ resize: { width: 800 } }],
+        { compress: 1, format: ImageManipulator.SaveFormat.JPEG, base64: false }
+      );
+
+      while (compressQuality > 0) {
+        const compressedImage = await ImageManipulator.manipulateAsync(
+          resizedImage.uri,
+          [],
+          {
+            compress: compressQuality,
+            format: ImageManipulator.SaveFormat.JPEG,
+            base64: true,
+          }
+        );
+
+        const base64Length = Math.ceil((compressedImage.base64.length * 3) / 4);
+
+        if (base64Length <= targetSize) {
+          return compressedImage;
+        }
+
+        compressQuality -= 0.1;
+      }
+    } catch (error) {
+      console.error('Error compressing image:', error);
+    }
+
+    return null;
   };
 
   return (
@@ -40,12 +87,9 @@ const ImageUploader = () => {
         <Ionicons name="create-outline" size={40} color="#8e8e8e" />
       </View>
 
-
       {selectedImageB64 && (
         <View style={{ marginTop: 10 }}>
-          <Text>
-            Base64 Length: {selectedImageB64.length}
-          </Text>
+          <Text>Base64 Length: {selectedImageB64.length} characters</Text>
         </View>
       )}
     </TouchableOpacity>

@@ -71,8 +71,6 @@ const handlePlaylistRecommendations = async (accessToken, likedSongs, navigation
 
       const recommendedTrackIds = addedLikedSongs.map(track => track.id);
 
-      console.log("Recommended track IDs:", recommendedTrackIds);
-
       saveRecommendedTrackIds(shuffleArray(recommendedTrackIds.slice(0, 30)));
 
       navigation.navigate('PlaylistDetails');
