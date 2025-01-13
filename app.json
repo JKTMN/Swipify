@@ -4,16 +4,17 @@
     "slug": "spotify_playlist_maker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo/swipifylogoSplash.png",
     "userInterfaceStyle": "automatic",
-    "expo-image-picker": {
-      "photosPermission": "The app accesses your photos to customise playlist cover art."
+    "scheme": "spotify_playlist_maker",
+    "extra": {
+      "spotifyRedirectUri": "spotify_playlist_maker://callback"
     },
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#2B2B2B"
     },
     "ios": {
       "userInterfaceStyle": "automatic",
@@ -23,11 +24,14 @@
       "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#2B2B2B"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

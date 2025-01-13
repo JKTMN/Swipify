@@ -1,14 +1,14 @@
-import React, { useContext} from 'react';
-import { View, TextInput, StyleSheet} from 'react-native';
+import React, { useContext } from 'react';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 import ThemeContext from '../context/ThemeContext';
-import DropDown from '../dropdown/Dropdown';
+import SearchButton from '../Buttons/SearchButton';
 
-function SearchFilterInput ({ value, onChangeText, placeholder }) {
+function SearchFilterInput({ value, onChangeText, placeholder, onPress }) {
     const { theme } = useContext(ThemeContext);
 
-    const styles = StyleSheet.create ({
+    const styles = StyleSheet.create({
         inputSection: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -17,20 +17,35 @@ function SearchFilterInput ({ value, onChangeText, placeholder }) {
             borderRadius: 8,
             paddingHorizontal: 10,
             margin: 16,
+            flex: 1,
         },
         searchInput: {
             flex: 1,
             height: 40,
             marginLeft: 10,
-            color: theme === 'dark' ? '#2B2B2B' : '#2B2B2B',
+            color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
         },
     });
 
     return (
-        <View style={styles.inputSection}>
-            <AntDesign name="search1" size={24} color={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'} />
-            <TextInput placeholder={placeholder} value={value} onChangeText={onChangeText} style={styles.searchInput} placeholderTextColor={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}/>
-            <DropDown />
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 16 }}>
+            <View accessible={true} style={styles.inputSection}>
+                <AntDesign
+                    name="search1"
+                    size={24}
+                    color={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}
+                />
+                <TextInput
+                    accessible={true}
+                    accessibilityLabel="search bar text input"
+                    placeholder={placeholder}
+                    value={value}
+                    onChangeText={onChangeText}
+                    style={styles.searchInput}
+                />
+            </View>
+            <SearchButton 
+            onPress={onPress} />
         </View>
     );
 }

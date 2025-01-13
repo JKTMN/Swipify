@@ -1,54 +1,93 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useContext, useState, useRef } from 'react';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import ThemeContext from '../context/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 
-const Deck = () => {
+import SongCard from '../cards/SongCard';
+import SwipeButton from '../Buttons/SwipeButton';
+import { handlePlaylistRecommendations } from '../api/Spotify - Util/HandleRecommendations';
+
+const Deck = ({ trackIds, handleLike, handleDislike, accessToken, market, saveRecommendedTrackIds, likedSongs, dislikedSongs }) => {
   const { theme } = useContext(ThemeContext);
   const navigation = useNavigation();
+  const swiperRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleSwipeLeft = () => {
+    if (swiperRef.current) {
+      swiperRef.current.swipeLeft();
+    } else {
+      console.log("Swiper ref is not available");
+    }
+  };
+
+  const handleSwipeRight = () => {
+    if (swiperRef.current) {
+      swiperRef.current.swipeRight();
+    } else {
+      console.log("Swiper ref is not available");
+    }
+  };
+
+  const handleSwipeDown = () => {
+    if (swiperRef.current) {
+      swiperRef.current.jumpToCardIndex(currentIndex - 1);
+      setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    } else {
+      console.log('Swiper ref is not available');
+    }
+  };
 
   const styles = StyleSheet.create({
     deckContainer: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      width: '70%',
-      height: '60%',
+      width: '100%',
     },
-    card: {
-      flex: 0.75,
-      borderRadius: 4,
-      borderWidth: 2,
-      borderColor: "#E8E8E8", //Change??
-      justifyContent: "center",
-      backgroundColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B', //Change??
+    btnContainer: {
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'space-evenly',
+      marginTop: 500,
+      zIndex: 1,
     },
-    text: {
-      textAlign: "center",
-      fontSize: 30,
-      backgroundColor: "transparent"
-    }
-});
+    btn: {
+      marginTop: 10,
+      backgroundColor: 'blue',
+      width: 50,
+      height: 50,
+    },
+  });
 
   return (
     <View style={styles.deckContainer}>
-        <Swiper
-            cards={['Nothing Great about Britain', 'Noddy', 'Bullet from a gun', 'Six Paths']}
-            renderCard={(card) => {
-                return (
-                    <View style={styles.card}>
-                        <Text style={styles.text}>{card}</Text>
-                    </View>
-                )
-            }}
-            onSwiped={(cardIndex) => {console.log(cardIndex)}}
-            onSwipedAll={() => navigation.navigate('PlaylistDetails')}
-            cardIndex={0}
-            backgroundColor={'transparent'}
-            stackSize={3}
-            disableTopSwipe
-        />
+      <Swiper
+        ref={swiperRef}
+        cards={trackIds}
+        renderCard={(song) => <SongCard trackId={song} />}
+        onSwiped={(cardIndex) => setCurrentIndex(cardIndex)}
+        onSwipedRight={(cardIndex) => {
+          handleLike(trackIds[cardIndex]);
+          setCurrentIndex(cardIndex + 1);
+        }}
+        onSwipedLeft={(cardIndex) => {
+          handleDislike(trackIds[cardIndex]);
+          setCurrentIndex(cardIndex + 1);
+        }}
+        goBackToPreviousCardOnSwipeBottom={true}
+        onSwipedAll={() => handlePlaylistRecommendations(accessToken, likedSongs, navigation, market, saveRecommendedTrackIds, dislikedSongs)}
+        cardIndex={currentIndex}
+        backgroundColor={'transparent'}
+        stackSize={5}
+        disableTopSwipe
+      />
+      <View style={styles.btnContainer} pointerEvents="box-none">
+        <SwipeButton text={'No'} colour={'red'} onPress={handleSwipeLeft} />
+        <SwipeButton text={'Go Back'} colour={'orange'} onPress={handleSwipeDown} />
+        <SwipeButton text={'Yes'} colour={'#1ED750'} onPress={handleSwipeRight} />
+      </View>
     </View>
   );
 };

@@ -8,15 +8,20 @@ const CreateNewPlaylistButton = () => {
             navigation.navigate('Home');
           };
     return (
-        <TouchableOpacity style={styles.button} onPress={goToHomeScreen}>
-            <Text style={styles.text}>Create new playlist</Text>
+        <TouchableOpacity 
+        accessability={true}
+        accessabilityRole="button"
+        accessabilityHint="This button will navigate you to the homepage to get started in creating a new playlist."
+        style={styles.button} 
+        onPress={goToHomeScreen}>
+            <Text accessabilityLabel="Create new playlist" style={styles.text}>Create new playlist</Text>
         </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create ({
     button: {
-        backgroundColor: '#1DB954',
+        backgroundColor: '#1ED750',
         paddingVertical: 12,
         paddingHorizontal: 20,
         borderRadius: 8,
@@ -25,7 +30,7 @@ const styles = StyleSheet.create ({
         marginTop: 20,
     },
     text: {
-        color: '#FCFCFC',
+        color: '#2B2B2B',
         fontSize: 16,
         fontWeight: 'bold',
     },

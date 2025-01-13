@@ -1,34 +1,60 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 
 import ThemeContext from '../context/ThemeContext';
 
 import Deck from '../deck/Deck';
-import SwipeButton from '../Buttons/SwipeButton';
+
+import { TracklistContext } from '../context/GameTracklist';
+import { AuthContext } from '../context/AccessTokenContext';
+import { UserContext } from '../context/UserDetailsContext';
 
 const GameScreen = () => {
   const { theme } = useContext(ThemeContext);
+  const { gameTrackIds, saveLikedSongs, saveDislikedSongs, saveRecommendedTrackIds, likedSongs, dislikedSongs } = useContext(TracklistContext);
+  const { accessToken } = useContext(AuthContext);
+  const { market } = useContext(UserContext);
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
     },
-    btnContainer: {
-      flexDirection: 'row',
+    imgContainer: {
+      padding: 10,
+      maxHeight: 80,
       width: '100%',
-      justifyContent: 'space-evenly',
+    },
+    img: {
+      marginTop: 10,
+      width: '100%',
+      maxHeight: '100',
     },
   });
 
+  const handleLike = (songId) => {
+    saveLikedSongs(songId);
+};
+
+const handleDislike = (songId) => {
+    saveDislikedSongs(songId);
+};
+  
+
   return (
     <SafeAreaView style={styles.container}>
-        <Deck />
-        <View style={styles.btnContainer}>
-          <SwipeButton text={'No'} colour={'red'} />
-          <SwipeButton text={'Maybe'} colour={'orange'} />
-          <SwipeButton text={'Yes'} colour={'green'} />
-        </View>
+        <Deck 
+        // accessible={true}
+        // accessibilityLabel="Deck of tracks, swipe right to like, swipe left to dislike, swipe down to go back to previous track"
+        trackIds={gameTrackIds} 
+        handleLike={handleLike} 
+        handleDislike={handleDislike} 
+        accessToken={accessToken} 
+        market={market} 
+        saveRecommendedTrackIds={saveRecommendedTrackIds}
+        likedSongs={likedSongs}
+        dislikedSongs={dislikedSongs}
+        />
     </SafeAreaView>
   );
 };

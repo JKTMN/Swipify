@@ -1,0 +1,36 @@
+dark mode: 2B2B2B
+light mode: FCFCFC
+light grey: F5F5F5
+dark grey: 363636
+
+Re_URI > OAuth > exchange > User Details
+
+SearchForItem > GetArtistsTopTracks > GetRecommendations(gameResults) > CreatePlaylist > AddCoverArt > AddItems
+              > (track) > GetRecommendations(gameResults) > CreatePlaylist > AddCoverArt > AddItems
+              > (genre) > GetRecommendations(gameResults) > CreatePlaylist > AddCoverArt > AddItems
+
+at end of game send uris to edit details screen
+
+
+SearchForItem > tracklist > extract isrc 
+              >> handleGameRecomendations> get MBid from isrc
+              >> getReccomendations > get mbid for reccomendations from isrc
+              >> get isrcs from mbids
+              >> get trackId from isrcs
+
+
+
+new flow: search for track > 
+        extract artist > 
+        search artists >
+         get genres from artists > 
+         search genres > 
+         get artists and their genres > 
+         use new genres for songs
+        >> usings songs for game>> 
+        swiped right> get artists and their genres > 
+        search genres > 
+        get songs > 
+        check if swiped left in songs > 
+        populate playlist
+

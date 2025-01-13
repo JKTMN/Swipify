@@ -1,18 +1,30 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, Text, View } from 'react-native';
 
 import {ThemeProvider} from './src/context/ThemeContext';
 
 import StackNavigator from './src/navigation/MainNavigation';
+import { AuthProvider } from './src/context/AccessTokenContext';
+
+import { UserProvider } from './src/context/UserDetailsContext';
+import { TracklistProvider } from './src/context/GameTracklist';
+import { PlaylistsProvider } from './src/context/PlaylistsContext';
 
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <NavigationContainer>
-        <StackNavigator />
-      </NavigationContainer>
-    </ThemeProvider>
+    <PlaylistsProvider>
+      <TracklistProvider>
+        <UserProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <NavigationContainer>
+                <StackNavigator />
+              </NavigationContainer>
+            </AuthProvider>
+          </ThemeProvider>
+        </UserProvider>
+      </TracklistProvider>
+    </PlaylistsProvider>
   );
 }

@@ -2,27 +2,32 @@ import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const LinkAccountButton = () => {
+const LinkAccountButton = ({onPress}) => {
 
     return (
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.text}>Link Account</Text>
+        <TouchableOpacity 
+        accessability={true}
+        accessabilityRole="button"
+        accessabilityHint="This button will open the spotify login page"
+        style={styles.button} 
+        onPress={onPress}>
+            <Text accessabilityLabel="Link account" style={styles.text}>Link Account</Text>
         </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create ({
     button: {
-        backgroundColor: '#1DB954',
+        backgroundColor: '#1ED750',
         paddingVertical: 12,
         paddingHorizontal: 20,
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        marginHorizontal: 10,
     },
     text: {
-        color: '#FCFCFC',
+        color: '#2B2B2B',
         fontSize: 16,
         fontWeight: 'bold',
     },
