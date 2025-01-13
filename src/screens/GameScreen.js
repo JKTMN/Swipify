@@ -44,6 +44,8 @@ const handleDislike = (songId) => {
   return (
     <SafeAreaView style={styles.container}>
         <Deck 
+        // accessible={true}
+        // accessibilityLabel="Deck of tracks, swipe right to like, swipe left to dislike, swipe down to go back to previous track"
         trackIds={gameTrackIds} 
         handleLike={handleLike} 
         handleDislike={handleDislike} 

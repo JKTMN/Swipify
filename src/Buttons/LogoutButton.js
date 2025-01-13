@@ -1,12 +1,16 @@
 import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 const LogoutButton = ({onPress}) => {
 
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.text}>Log Out</Text>
+        <TouchableOpacity 
+        accessability={true}
+        accessabilityRole="button"
+        accessabilityHint="This button will log you out of spotify"
+        style={styles.button} 
+        onPress={onPress}>
+            <Text accessabilityLabel="Log out" style={styles.text}>Log Out</Text>
         </TouchableOpacity>
     );
 };

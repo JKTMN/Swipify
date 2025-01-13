@@ -1,9 +1,6 @@
-import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
-import ThemeContext from '../context/ThemeContext';
 
 const SearchButton = ({onPress}) => {
-    const { theme } = useContext(ThemeContext);
 
     const styles = StyleSheet.create ({
         searchButton: {
@@ -24,8 +21,13 @@ const SearchButton = ({onPress}) => {
     });
 
     return (
-        <TouchableOpacity style={styles.searchButton} onPress={onPress}>
-            <Text style={styles.searchButtonText}>Search</Text>
+        <TouchableOpacity 
+        accessability={true}
+        accessabilityRole="button"
+        accessabilityHint="This button will search your query"
+        style={styles.searchButton} 
+        onPress={onPress}>
+            <Text accessabilityLabel="search button" style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
     );
 };

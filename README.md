@@ -15,8 +15,8 @@ A react native app which gamifies Spotify playlist creation
 - [x] remove dropdown for type :skull: (less needs to be implemented)
     - [x] Add a new search button
 - [x] once playlist is created, store details including tracks in global array
-    - [ ] display playlists on playlist screen
-    - [ ] with screen to view tracks in playlist
+    - [x] display playlists on playlist screen
+    - [x] with screen to view tracks in playlist
 - [x] decide on app name and create logo
     - [x] implement on deck swipe page
 - [x] ensure market is set correctly for each api call 

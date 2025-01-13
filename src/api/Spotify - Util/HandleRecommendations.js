@@ -73,7 +73,7 @@ const handlePlaylistRecommendations = async (accessToken, likedSongs, navigation
 
       saveRecommendedTrackIds(shuffleArray(recommendedTrackIds.slice(0, 30)));
 
-      navigation.navigate('PlaylistDetails');
+      navigation.navigate('EditPlaylistDetails');
     } catch (error) {
       console.error("Error getting recommendations:", error);
       throw new Error("Error getting recommendations", error);

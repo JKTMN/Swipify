@@ -3,8 +3,13 @@ import { TouchableOpacity , Text, StyleSheet, onPress } from 'react-native';
 
 const CreatePlaylistButton = ({onPress}) => {
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.text}>Create Playlist</Text>
+        <TouchableOpacity 
+        accessability={true}
+        accessabilityRole="button"
+        accessabilityHint="This button will navigate you to the homepage, this will create your playlist"
+        style={styles.button} 
+        onPress={onPress}>
+            <Text accessabilityLabel="create playlist" style={styles.text}>Create Playlist</Text>
         </TouchableOpacity>
     );
 };

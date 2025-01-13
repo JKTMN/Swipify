@@ -1,33 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 
 import PlaylistItem from '../flatlistItems/PlaylistItem';
-import getPlaylistData from '../api/GetTempPlaylists';
 
 export default function PlaylistList({ data }) {
-    const [playlistData, setPlaylistData] = useState(data);
     const [refreshing, setRefreshing] = useState(false);
+    const [playlistData, setPlaylistData] = useState([]);
 
     useEffect(() => {
-        setPlaylistData(data);
+        setPlaylistData(data.flat());
     }, [data]);
 
     return (
-        <View style={styles.container}>
+        <View accessible={true} style={styles.container}>
             <FlatList
-            data={data}
-            keyExtractor={( item ) => item.id}
+            accessabilityLabel="List of created playlists by the user"
+            data={playlistData}
+            keyExtractor={(item, index) => item.playlistId ? item.playlistId.toString() : index.toString()}
             renderItem={({ item }) => (
                 <PlaylistItem
-                title={item.title}
-                image={item.image}
-                description={item.description}
+                    playlistId={item.playlistId}
+                    name={item.name}
+                    description={item.description}
+                    image={item.image}
+                    tracks={item.tracks}
                 />
             )}
             refreshing={refreshing}
             onRefresh={() => {
-                setPlaylistData(getPlaylistData());
+                setPlaylistData(data.flat());
             }}
+            // scrollEnabled={false}
             />
         </View>
     )
@@ -36,5 +39,6 @@ export default function PlaylistList({ data }) {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        paddingBottom: 30,
     },
 });

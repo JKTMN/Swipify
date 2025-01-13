@@ -8,8 +8,13 @@ const CreateNewPlaylistButton = () => {
             navigation.navigate('Home');
           };
     return (
-        <TouchableOpacity style={styles.button} onPress={goToHomeScreen}>
-            <Text style={styles.text}>Create new playlist</Text>
+        <TouchableOpacity 
+        accessability={true}
+        accessabilityRole="button"
+        accessabilityHint="This button will navigate you to the homepage to get started in creating a new playlist."
+        style={styles.button} 
+        onPress={goToHomeScreen}>
+            <Text accessabilityLabel="Create new playlist" style={styles.text}>Create new playlist</Text>
         </TouchableOpacity>
     );
 };

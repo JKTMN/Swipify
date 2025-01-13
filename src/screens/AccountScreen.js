@@ -3,23 +3,23 @@ import { View, Text, StyleSheet, SafeAreaView, useColorScheme, TouchableOpacity 
 import ThemeContext from '../context/ThemeContext';
 import LinkAccountButton from '../Buttons/LinkAccountButton';
 import authenticateWithSpotify from '../api/Spotify - Auth/spotifyAuth';
-import { useUser } from '../context/UserDetailsContext';
+import { UserContext } from '../context/UserDetailsContext';
 import { AuthContext } from '../context/AccessTokenContext';
 import { GetUserDetails } from '../api/Spotify - Util/SpotifyGetUserDetails';
 import { SelectCountry } from 'react-native-element-dropdown';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { TracklistContext } from '../context/GameTracklist';
 import LogoutButton from '../Buttons/LogoutButton';
+import { PlaylistsContext } from '../context/PlaylistsContext';
 
 const AccountScreen = () => {
   const systemTheme = useColorScheme();
   const { theme, toggleTheme, useSystemTheme } = useContext(ThemeContext);
   const { accessToken, clearToken } = useContext(AuthContext);
-  const { saveUserDetails, renderProfile, clearUserDetails } = useUser();
-  const { clearLikedSongs, clearDislikedSongs} = useContext(TracklistContext);
+  const { saveUserDetails, renderProfile, clearUserDetails } = useContext(UserContext);
 
+  const { clearPlaylists } = useContext(PlaylistsContext);
   const navigation = useNavigation();
 
   const [authCode, setAuthCode] = useState(null);
@@ -51,6 +51,7 @@ const AccountScreen = () => {
   const handleLogout = () => {
     clearToken();
     clearUserDetails();
+    clearPlaylists();
   };
 
   const styles = StyleSheet.create({
@@ -101,13 +102,6 @@ const AccountScreen = () => {
       marginVertical: 20,
       flexDirection: 'row',
     },
-    clearContainer: {
-      flexDirection: 'row',
-      width: '100%'
-    },
-    clearBtn: {
-      backgroundColor: '#1ED750',
-    },
     logoutBtnContainer: {
       justifyContent: 'center',
       alignContent: 'center',
@@ -119,14 +113,14 @@ const AccountScreen = () => {
     <SafeAreaView style={styles.container}>
       {renderProfile(theme)}
       <View style={styles.content}>
-        <View style={styles.loginContainer}>
-          <Text style={styles.heading}>Press the button below to link your Spotify account!</Text>
+        <View accessability={true} style={styles.loginContainer}>
+          <Text accessabilityLabel="Press the button below to link your spotify account" style={styles.heading}>Press the button below to link your Spotify account!</Text>
           <LinkAccountButton onPress={handleLinkAccount} />
           {authCode}
         </View>
         <View>
-          <View style={styles.dropdownContainer}>
-            <Text style={styles.heading}>Toggle theme:</Text>
+          <View accessability={true} style={styles.dropdownContainer}>
+            <Text accessabilityLabel="Toggle theme" style={styles.heading}>Toggle theme:</Text>
             <SelectCountry
               style={styles.dropdown}
               selectedTextStyle={styles.selectedText}
@@ -139,12 +133,8 @@ const AccountScreen = () => {
               searchPlaceholder="Search..."
               dropdownStyle={styles.dropdownMenu}
               onChange={handleThemeChange}
-            />
+            /> {/* Add accessability here! */}
           </View>
-        </View>
-        <View style={styles.clearContainer}>
-          <TouchableOpacity onPress={clearLikedSongs} style={styles.clearBtn}><Text>Clear liked songs</Text></TouchableOpacity>
-          <TouchableOpacity onPress={clearDislikedSongs} style={styles.clearBtn}><Text>Clear disliked songs</Text></TouchableOpacity>
         </View>
 
         <View style={styles.logoutBtnContainer}>

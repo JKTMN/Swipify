@@ -31,7 +31,7 @@ const HomeScreen = () => {
       if (selectedIndex !== null) {
         saveSelectedTrack(searchResults[selectedIndex]);
       } else {
-        alert('No item selected');
+        console.log('No item selected');
       }
     } catch (error) {
       console.error('Search error:', error);
@@ -44,18 +44,22 @@ const HomeScreen = () => {
   };
 
   const startGame = async () => {
-    try {
-      if (selectedIndex !== null) {
-        await handleStartGame(
-          accessToken, 
-          selectedTrack.artist,
-          navigation, 
-          market, 
-          saveGameTrackIds
-        );
+    if (selectedIndex !== null) {
+      try {
+        if (selectedIndex !== null) {
+          await handleStartGame(
+            accessToken, 
+            selectedTrack.artist,
+            navigation, 
+            market, 
+            saveGameTrackIds
+          );
+        }
+      } catch (error) {
+        console.error('Error starting game:', error);
       }
-    } catch (error) {
-      console.error('Error starting game:', error);
+    } else {
+      alert('No item selected');
     }
   };
   
@@ -107,7 +111,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Text style={styles.title}>Search for an artist, song, or genre</Text>
+        <Text accessible={true} accessibilityLabel="Search for an artist, song, or genre" style={styles.title}>Search for an artist, song, or genre</Text>
         <SearchFilterInput
           placeholder="Search..."
           placeholderTextColor={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}
@@ -116,6 +120,9 @@ const HomeScreen = () => {
           onPress={handleSearch}
         />
         <ResultList
+          accessability={true}
+          accessibilityLabel="List of tracks in search results"
+          accessabilityHint="Select a track to get started"
           data={results}
           imgSize={55}
           headingSize={16}
@@ -124,9 +131,9 @@ const HomeScreen = () => {
           onPress={handleItemPress}
         />
         {results && results.length > 0 ? (
-          <View style={styles.BtnContainer}><GetStartedButton onPress={startGame} /></View>
+          <View accessible={true} style={styles.BtnContainer}><GetStartedButton onPress={startGame} /></View>
         ) : (
-          <Text style={styles.message}>Search for a song to get started!</Text>
+          <Text accessible={true} style={styles.message}>Search for a song to get started!</Text>
         )}
       </ScrollView>
     </SafeAreaView>

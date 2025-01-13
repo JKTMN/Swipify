@@ -3,8 +3,13 @@ import { TouchableOpacity , Text, StyleSheet } from 'react-native';
 
 const GetStartedButton = ({onPress}) => {
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.text}>Get Started</Text>
+        <TouchableOpacity 
+        accessability={true}
+        accessabilityRole="button"
+        accessabilityHint="This button will start the game, ensure you have a track selected."
+        style={styles.button} 
+        onPress={onPress}>
+            <Text accessabilityLabel="Get started" style={styles.text}>Get Started</Text>
         </TouchableOpacity>
     );
 };

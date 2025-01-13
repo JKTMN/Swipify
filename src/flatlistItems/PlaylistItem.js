@@ -1,23 +1,29 @@
-import React, { useContext } from 'react';
-import { View, FlatList, StyleSheet, Image, Text } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import ThemeContext from '../context/ThemeContext';
 
 const PlaylistItem = (props) => {
     const { theme } = useContext(ThemeContext);
-    const { title, image, description } = props;
+    const { playlistId, name, description, image, tracks } = props;
+    const navigation = useNavigation();
+
+    const openPlaylistDetails = () => {
+      navigation.navigate('PlaylistDetails',{playlistId, name, description, image, tracks});
+    };
 
     const styles = StyleSheet.create({
         listItemContainer: {
           width: '95%',
-          borderWidth: 2,
+          borderWidth: 1,
           borderColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
-          borderRadius: 10,
+          borderRadius: 5,
           alignSelf: 'center',
           flexDirection: 'column',
           padding: 5,
-          marginBottom: 2.5,
+          marginBottom: 5,
           marginTop: 2.5,
         },
         row: {
@@ -51,21 +57,27 @@ const PlaylistItem = (props) => {
       });
 
     return (
-        <View style={styles.listItemContainer}>
-        <View style={styles.row}>
-            <Image source={image} style={styles.image} />
-            <View style={styles.textContainer}>
-            <Text style={styles.heading}>{title}</Text>
-            <Text style={styles.description}>{description}</Text>
-            </View>
-            <AntDesign
-            name="right"
-            size={24}
-            color={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}
-            style={styles.icon}
-            />
-        </View>
-        </View>
+        <TouchableOpacity 
+        accessible={true}
+        accessabilityLabel="Playlist item in list"
+        accessabilityHint="Press to open playlist details"
+        accessabilityRole="button"
+        style={styles.listItemContainer} 
+        onPress={openPlaylistDetails}>
+          <View style={styles.row}>
+              <Image accessabilityLabel="Playlist cover image" source={{uri: image}} style={styles.image} />
+              <View style={styles.textContainer}>
+              <Text accessabilityLabel={`Playlist name: ${name}`} style={styles.heading}>{name}</Text>
+              <Text accessabilityLabel={`Playlist description: ${description}`} style={styles.description}>{description}</Text>
+              </View>
+              <AntDesign
+              name="right"
+              size={24}
+              color={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}
+              style={styles.icon}
+              />
+          </View>
+        </TouchableOpacity>
 
 
 

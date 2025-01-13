@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
             }
         };
         loadToken();
-    }, []);
+    }, [SecureStore.getItemAsync('spotifyAccessToken')]);
 
     const saveToken = async (accToken, refToken, expiresIn = 3600) => {
         const currentTime = Date.now();

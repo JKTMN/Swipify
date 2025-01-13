@@ -1,9 +1,6 @@
-import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
 
 const SwipeButton = ({text, colour, onPress}) => {
-
-    // const { text, colour, onPress } = props;
 
     const styles = StyleSheet.create ({
         button: {
@@ -25,8 +22,13 @@ const SwipeButton = ({text, colour, onPress}) => {
     });
 
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.text}>{text}</Text>
+        <TouchableOpacity 
+        accessability={true}
+        accessabilityRole="button"
+        accessabilityHint="This button will make the swipe gesture:" 
+        style={styles.button} 
+        onPress={onPress}>
+            <Text accessabilityLabel={text} style={styles.text}>{text}</Text>
         </TouchableOpacity>
     );
 };

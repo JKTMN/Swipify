@@ -30,13 +30,13 @@ const SongCard = ({ trackId }) => {
             <body>
                 <div class="container">
                     <div class="player">
-                        <!-- Adjust the iframe's width and height to make it appear more vertical -->
                         <iframe id="spotify-player" 
                                 src="https://open.spotify.com/embed/track/${trackId}" 
                                 width="100%" 
                                 height="500" 
                                 frameborder="0" 
                                 allowtransparency="true" 
+                                allowautoplay="true"
                                 allow="encrypted-media"></iframe>
                     </div>
                 </div>
@@ -52,6 +52,7 @@ const SongCard = ({ trackId }) => {
             originWhitelist={['*']}
             source={{ html: htmlContent }}
             javaScriptEnabled={true}
+            scrollEnabled={false}
         />
     );
 };

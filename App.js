@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, Text, View } from 'react-native';
 
 import {ThemeProvider} from './src/context/ThemeContext';
 
@@ -8,14 +7,14 @@ import StackNavigator from './src/navigation/MainNavigation';
 import { AuthProvider } from './src/context/AccessTokenContext';
 
 import { UserProvider } from './src/context/UserDetailsContext';
-import { TypeProvider } from './src/context/TypeContext';
 import { TracklistProvider } from './src/context/GameTracklist';
+import { PlaylistsProvider } from './src/context/PlaylistsContext';
 
 
 export default function App() {
   return (
-    <TracklistProvider>
-      <TypeProvider>
+    <PlaylistsProvider>
+      <TracklistProvider>
         <UserProvider>
           <ThemeProvider>
             <AuthProvider>
@@ -25,7 +24,7 @@ export default function App() {
             </AuthProvider>
           </ThemeProvider>
         </UserProvider>
-      </TypeProvider>
-    </TracklistProvider>
+      </TracklistProvider>
+    </PlaylistsProvider>
   );
 }

@@ -7,6 +7,7 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [userDetails, setUserDetails] = useState(null);
     const [market, setMarket] = useState(null);
+    const [profilePicture, setProfilePicture] = useState(null);
 
     const STORAGE_KEY = '@user_details';
 
@@ -28,6 +29,7 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         if (userDetails && userDetails.country) {
             setMarket(userDetails.country);
+            setProfilePicture(JSON.stringify(userDetails.images));
         }
     }, [userDetails]);
 
@@ -45,6 +47,7 @@ export const UserProvider = ({ children }) => {
             await AsyncStorage.removeItem(STORAGE_KEY);
             setUserDetails(null);
             setMarket(null);
+            setProfilePicture(null);
         } catch (error) {
             console.error('Failed to clear user details:', error);
         }
@@ -79,13 +82,11 @@ export const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ userDetails, market, saveUserDetails, clearUserDetails, renderProfile }}>
+        <UserContext.Provider value={{ userDetails, market, saveUserDetails, clearUserDetails, renderProfile, profilePicture }}>
             {children}
         </UserContext.Provider>
     );
 };
-
-export const useUser = () => useContext(UserContext);
 
 const styles = StyleSheet.create({
     profileContainer: {

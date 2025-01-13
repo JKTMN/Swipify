@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -11,12 +11,17 @@ import ThemeContext from '../context/ThemeContext';
 import GameScreen from '../screens/GameScreen';
 import PlaylistScreen from '../screens/PlaylistScreen';
 import EditPlaylistDetailsScreen from '../screens/EditPlaylistDetails';
+import { UserContext } from '../context/UserDetailsContext';
+import PlaylistDetailsScreen from '../screens/PlaylistDetailsScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function BottomTabNavigator() {
     const { theme } = useContext(ThemeContext);
+    const { profilePicture } = useContext(UserContext);
+
+    const pfp = profilePicture;
 
     return (
         <Tab.Navigator 
@@ -34,8 +39,6 @@ function BottomTabNavigator() {
                 fontWeight: 'bold',
             },
          }}>
-            {/* <Tab.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }}/>
-            <Tab.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/> */}
             <Tab.Screen name="Home" component={HomeScreen} 
             options={{ tabBarIcon: ({ color }) => <Ionicons name="home" size={30} color={color} />, 
             headerTitleAlign: 'center', 
@@ -48,7 +51,19 @@ function BottomTabNavigator() {
                 />
             )
         }}/>
-            <Tab.Screen name="Playlists" component={PlaylistScreen} options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons name="playlist-music-outline" size={30} color={color} />, headerTitleAlign: 'center', headerShown: false}}/>
+            <Tab.Screen name="Playlists" 
+            component={PlaylistScreen} 
+            options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons 
+            name="playlist-music-outline" size={30} color={color} />, 
+            headerTitleAlign: 'center', 
+            headerShown: true,
+            headerStyle: {backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7', height: 100},
+            headerLeft: () => (
+                <Image 
+                  source={require('../../assets/logo/swipifylogoCropped.png')}
+                  style={{ width: 30, height: 35, marginLeft: 20 }}
+                />
+            )}}/>
             <Tab.Screen name="Account" component={AccountScreen} options={{ tabBarIcon: ({ color }) => <Ionicons name="person" size={30} color={color} />}}/>
         </Tab.Navigator>
     );
@@ -72,13 +87,20 @@ function StackNavigator() {
                       resizeMode="contain" 
                     />
                 )}}/>
-            <Stack.Screen name="PlaylistDetails" component={EditPlaylistDetailsScreen} options={{
+            <Stack.Screen name="EditPlaylistDetails" component={EditPlaylistDetailsScreen} options={{
                 headerStyle: {backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7'}, 
                 headerTintColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
                 }}/>
+            <Stack.Screen name="PlaylistDetails" component={PlaylistDetailsScreen} options={{
+                headerStyle: {backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7'},
+                headerTintColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }}/>
         </Stack.Navigator>
     );
 }

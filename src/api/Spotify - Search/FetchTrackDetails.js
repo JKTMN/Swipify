@@ -8,14 +8,14 @@ const fetchTrackDetails = async (accessToken, tracks, market) => {
 
         const data = await response.json();
 
-        if (response.ok && data.tracks && data.tracks.length > 0) {
+        if (response.ok) {
             const tracks = data.tracks.map((track) => {
                 return {
                     uri: track.uri,
                     id: track.id,
                     name: track.name,
                     description: track.album.name,
-                    artist: track.artists?.map(artist => artist.name).join(','),
+                    artist: track.artists?.map(artist => artist.name).join(', '),
                     image: track.album.images[0]?.url,
                 };
             });

@@ -13,11 +13,14 @@ import { TracklistContext } from '../context/GameTracklist';
 import { fetchTrackDetails } from '../api/Spotify - Search/FetchTrackDetails';
 import { AuthContext } from '../context/AccessTokenContext';
 import { useNavigation } from '@react-navigation/native';
+import { getPlaylistDetails } from '../api/Spotify - Playlist/SpotifyGetPlaylistDetails';
+import { PlaylistsContext } from '../context/PlaylistsContext';
 
 const EditPlaylistDetailsScreen = () => {
   const { theme } = useContext(ThemeContext);
   const { userDetails, market } = useContext(UserContext);
   const { accessToken } = useContext(AuthContext);
+  const { savePlaylist } = useContext(PlaylistsContext)
 
   const { recommendedTrackIds, 
     clearSelectedTrack, 
@@ -89,19 +92,23 @@ const EditPlaylistDetailsScreen = () => {
         uris,
       });
 
-  
-      let imageBase64 = selectedImageB64;
-      if (imageBase64 && !imageBase64.startsWith('data:image')) {
-        imageBase64 = `data:image/jpeg;base64,${imageBase64}`;
+      if (selectedImageB64 !== null) {
+        let imageBase64 = selectedImageB64;
+        if (imageBase64 && !imageBase64.startsWith('data:image')) {
+          imageBase64 = `data:image/jpeg;base64,${imageBase64}`;
+        }
+
+        if (imageBase64) {
+          await AddCoverImage({
+            accessToken,
+            playlistId,
+            selectedImageB64: imageBase64,
+          });
+        }
       }
-  
-      if (imageBase64) {
-        await AddCoverImage({
-          accessToken,
-          playlistId,
-          selectedImageB64: imageBase64,
-        });
-      }
+
+      const playlist = await getPlaylistDetails(accessToken, playlistId, market);
+      savePlaylist(playlist);
   
   
       alert('Playlist created successfully!');
@@ -180,18 +187,26 @@ const EditPlaylistDetailsScreen = () => {
   return (
     <SafeAreaView style={{ backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC', flex: 1 }}>
       <ScrollView contentContainerStyle={[styles.container, styles.scrollViewContent]}>
-        <ImageUploader onImageSelect={(base64) => setSelectedImageB64(base64)} />
-        <Text style={styles.imageText}>Change cover art</Text>
-        <View>
-          <Text style={styles.label}>Enter playlist name:</Text>
+        <ImageUploader 
+        accessible={true}
+        accessibilityLabel="Image uploader"
+        accessibilityHint="Tap here to select an image"
+        onImageSelect={(base64) => setSelectedImageB64(base64)} />
+        <Text accessibilityLabel="change cover art" style={styles.imageText}>Change cover art</Text>
+        <View accessibility={true} accessibilityLabel="Text fields">
+          <Text accessibilityLabel="label for text input: enter playlist name" style={styles.label}>Enter playlist name:</Text>
           <TextInput
+            accessability={true}
+            accessabilityHint="Enter a name for the playlist"
             style={styles.input}
             placeholder="Enter playlist name"
             value={playlistName}
             onChangeText={setPlaylistName}
           />
-          <Text style={styles.label}>Enter playlist description:</Text>
+          <Text accessibilityLabel="label for text input: enter playlist description" style={styles.label}>Enter playlist description:</Text>
           <TextInput
+            accessibility={true}
+            accessibilityHint="Enter a description for the playlist"
             style={styles.input}
             placeholder="Enter playlist description"
             value={playlistDescription}
@@ -199,10 +214,12 @@ const EditPlaylistDetailsScreen = () => {
           />
         </View>
 
-        <View style={styles.results}>
+        <View style={styles.results} accessibility={true}>
           <View style={styles.row}>
-            <Text style={styles.leftText}>Tracks:</Text>
+            <Text accessibility={true} accessabilityLabel="Label for tracks list" style={styles.leftText}>Tracks:</Text>
             <TouchableOpacity
+              accessibilityRole="button"
+              accessabilityHint="Once a track is selected, use this button to remove it from the playlist"
               style={styles.rightSection}
               onPress={handleRemovingItem}
             >
@@ -213,6 +230,9 @@ const EditPlaylistDetailsScreen = () => {
         </View>
 
         <ResultList
+          accessability={true}
+          accessibilityLabel="List of tracks in playlist"
+          accessabilityHint="Select a track from the results to remove"
           style={styles.results}
           data={data}
           imgSize={55}

@@ -44,13 +44,17 @@ const ResultItem = ({ name, image, description, imgSize, headingSize, descriptio
   });
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity accessible={true} 
+    accessabilityLabel="Track item in list"
+    accessabilityRole="button"
+    accessabilityHint="Select a track"
+    onPress={onPress}>
       <View style={styles.listItemContainer}>
         <View style={styles.row}>
-          <Image source={{ uri: image }} style={styles.image} />
+          <Image accessabilityLabel="Track cover image" source={{ uri: image }} style={styles.image} />
           <View style={styles.textContainer}>
-            <Text style={styles.trackName}>{name}</Text>
-            <Text style={styles.artist}>{artist}</Text>
+            <Text accessabilityLabel={`Track name: ${name}`} style={styles.trackName}>{name}</Text>
+            <Text accessabilityLabel={`Track artists: ${artist}`}style={styles.artist}>{artist}</Text>
           </View>
         </View>
       </View>
