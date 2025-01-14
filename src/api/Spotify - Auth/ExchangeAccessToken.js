@@ -1,7 +1,19 @@
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '@env';
 import * as SecureStore from 'expo-secure-store';
-
 import { REDIRECT_URI } from '../Spotify - Util/CreateRedirectURI';
+
+/**
+ * Exchanges an authorisation code for an access and refresh token.
+ * 
+ * @async
+ * @function exchangeAuthCodeForAccessToken
+ * @param {string} authCode - The authorisation code obtained from Spotify's Auth endpoint.
+ * @returns {Promise<void>} The access token recieved from Spotify's API.
+ * 
+ * @throws {Error} If the exchange process fails.
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/tutorials/code-flow"
+ */
 
 const exchangeAuthCodeForAccessToken = async (authCode) => {
 

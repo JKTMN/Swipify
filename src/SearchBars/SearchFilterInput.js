@@ -1,9 +1,31 @@
 import React, { useContext } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
-
 import ThemeContext from '../context/ThemeContext';
 import SearchButton from '../Buttons/SearchButton';
+
+/**
+ * The SearchFilterInput is a component used for entering a search query for the Spotify Search API.
+ * @param {Object} props - Properties passed to the component.
+ * @param {string} props.value - The search query.
+ * @param {string} props.onChangeText - String that updates as the user enters the query.
+ * @param {string} props.placeholder - String that is used in place of the search query before the user inputs anything.
+ * @param {function} props.OnPress - function passed to the component from the parent.
+ * 
+ * @returns {JSX.Element} The rendered SearchfilterInput component.
+ * 
+ * @example
+ * //Example usage of the SearchFilterInput component
+ * import SearchFilterInput from './SearchBars/SearchFilterInput';
+ * 
+ * <SearchFilterInput
+    placeholder="Search..."
+    placeholderTextColor={theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}
+    value={query}
+    onChangeText={setQuery}
+    onPress={handleSearch}
+   />
+ */
 
 function SearchFilterInput({ value, onChangeText, placeholder, onPress }) {
     const { theme } = useContext(ThemeContext);

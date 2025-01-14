@@ -1,8 +1,24 @@
-const getPlaylistDetails = async (AccessToken, playlistId, market) => {
+/**
+ * Gets the details of a specified Spotify playlist using a playlistId.
+ * 
+ * @async
+ * @function getPlaylistDetails
+ * @param {Object} params - The function parameters
+ * @param {string} params.accessToken - The users spotify accessToken
+ * @param {string} params.playlistId - The playlistId of the specific playlist
+ * @param {string} params.market - The users ISO country code.
+ *
+ * @throws {Error} if no playlist was found in the response.
+ * 
+ * @returns {Object} an object containing the specified playlists data.
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/reference/get-playlist".
+ */
+const getPlaylistDetails = async (accessToken, playlistId, market) => {
     try {
         const response = await fetch (`https://api.spotify.com/v1/playlists/${encodeURIComponent(playlistId)}?market=${market}`, {
             headers: {
-                Authorization: `Bearer ${AccessToken}`,
+                Authorization: `Bearer ${accessToken}`,
             },
         });
 

@@ -4,24 +4,26 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import HomeScreen from '../screens/HomeScreen';
 import AccountScreen from '../screens/AccountScreen';
 import ThemeContext from '../context/ThemeContext';
 import GameScreen from '../screens/GameScreen';
 import PlaylistScreen from '../screens/PlaylistScreen';
 import EditPlaylistDetailsScreen from '../screens/EditPlaylistDetails';
-import { UserContext } from '../context/UserDetailsContext';
 import PlaylistDetailsScreen from '../screens/PlaylistDetailsScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+/**
+ * BottomTabNavigator component sets up a bottom tab navigator with 3 main screens:
+ * Home, Playlists, and Account. Each tab is customised with icons and theming.
+ * 
+ * @returns {JSX.Element} A bottom tab navigator with 3 screens
+ */
+
 function BottomTabNavigator() {
     const { theme } = useContext(ThemeContext);
-    const { profilePicture } = useContext(UserContext);
-
-    const pfp = profilePicture;
 
     return (
         <Tab.Navigator 
@@ -68,6 +70,14 @@ function BottomTabNavigator() {
         </Tab.Navigator>
     );
 }
+
+/**
+ * StackNavigator component sets up a stack navigator that includes the BottomTabsNavigator
+ * and additional screens such as: GameScreen, EditPlaylistDetails, and PlaylistDeatails.
+ * Each screen is customised with header styles.
+ * 
+ * @returns {JSX.Element} A stack navigator for navigating between screens. 
+ */
 
 function StackNavigator() {
     const { theme } = useContext(ThemeContext);

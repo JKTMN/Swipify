@@ -3,6 +3,19 @@ import { fetchTracks } from '../Spotify - Search/SpotifyFetchTracks';
 import { fetchGenresForArtists } from '../Spotify - Search/SpotifyFetchGenres';
 import { fetchTopTracksByArtist } from '../Spotify - Search/SpotifyFetchTopTracks';
 
+/**
+ * Handler function for starting the game, it takes the artist from the selected track and makes a series of API requests to get an array of trackIds for use in the game.
+ * 
+ * @async
+ * @function handleStartGame
+ * @param {string} accessToken - The users Spotify accessToken.
+ * @param {string} artist - The artist from the selected track.
+ * @param {function} navigation - For navigating between screens.
+ * @param {string} market - The users ISO country code.
+ * @param {function} saveGameTrackIds - For saving the trackIds to context.
+ * 
+ * @throws {Error} if it was unable to follow the flow to get recommendations for the game.
+ */
 const handleStartGame = async (accessToken, artist, navigation, market, saveGameTrackIds) => {
   if (artist) {
     try {
@@ -22,7 +35,7 @@ const handleStartGame = async (accessToken, artist, navigation, market, saveGame
 
       const tracksWithScores = await calculateGenreAffinityScores(allTracks, initialArtistGenres, accessToken);
 
-      let randomizedTracks = randomizeTracksWithWeighting(tracksWithScores, limit=10);
+      let randomizedTracks = randomiseTracksWithWeighting(tracksWithScores, limit=10);
 
       let uniqueTracks = removeDuplicateTracks(randomizedTracks);
 
@@ -41,7 +54,20 @@ const handleStartGame = async (accessToken, artist, navigation, market, saveGame
 };
 
 
-
+/**
+ * Handler function for getting playlist recommendation, it takes the likedSongs array of trackIds and makes a series of API requests to get track recommendations.
+ * 
+ * @async
+ * @function handlePlaylistRecommendations
+ * @param {string} accessToken - The users Spotify accessToken.
+ * @param {array} likedSongs - Array containing the songs the user liked in the game.
+ * @param {function} navigation - For navigating between screens.
+ * @param {string} market - The users ISO country code.
+ * @param {function} saveRecommendedTrackIds - For saving the trackIds to context.
+ * @param {array} dislikedSongs - Array containing the songs the user disliked in the game.
+ * 
+ * @throws {Error} if it was unable to follow the flow to get recommendations for the playlist.
+ */
 const handlePlaylistRecommendations = async (accessToken, likedSongs, navigation, market, saveRecommendedTrackIds, dislikedSongs) => {
   if (likedSongs && likedSongs.length > 0) {
     try {
@@ -61,7 +87,7 @@ const handlePlaylistRecommendations = async (accessToken, likedSongs, navigation
 
       const tracksWithScores = await calculateGenreAffinityScores(allTracks, initialArtistGenres, accessToken);
 
-      let randomizedTracks = randomizeTracksWithWeighting(tracksWithScores, 30);
+      let randomizedTracks = randomiseTracksWithWeighting(tracksWithScores, 30);
 
       let uniqueTracks = removeDuplicateTracks(randomizedTracks);
 
@@ -84,7 +110,16 @@ const handlePlaylistRecommendations = async (accessToken, likedSongs, navigation
   }
 };
 
-
+/**
+ * Function that fetches top tracks for multiple artists using their Ids.
+ * 
+ * @async
+ * @function fetchTopTracksByArtist
+ * @param {array} artistIds - Array of Spotify artistIds.
+ * @param {string} accessToken - The users Spotify accessToken.
+ * @param {string} market - The users ISO country code.
+ * @returns {Promise<Object[]>} An array of top tracks for the provided artists.
+ */
 const fetchTopTracksByArtists = async (artistIds, accessToken, market) => {
   const allTracks = [];
 
@@ -96,7 +131,13 @@ const fetchTopTracksByArtists = async (artistIds, accessToken, market) => {
   return allTracks;
 };
 
-
+/**
+ * Extract Ids of featured artists from a list of tracks.
+ * 
+ * @function getFeaturedArtists
+ * @param {array} tracks - An array of track objects.
+ * @returns {array} - An array of unique featured artistIds.
+ */
 const getFeaturedArtists = (tracks) => {
   let featuredArtistIds = [];
   
@@ -113,13 +154,30 @@ const getFeaturedArtists = (tracks) => {
   return featuredArtistIds;
 };
 
-
+/**
+ * Calculates the genre affinity score between two sets of genres.
+ * 
+ * @function calculateGenreAffinityScore
+ * @param {array} trackGenres - An array containing genres of a track.
+ * @param {array} artistGenres - An array containing genres of an artist.
+ * @returns {number} - The count of matching genres between the two sets.
+ * 
+ * @source "https://dev.to/askyt/how-to-find-common-elements-in-two-arrays-in-javascript-1108".
+ */
 const calculateGenreAffinityScore = (trackGenres, artistGenres) => {
   const intersection = trackGenres.filter(genre => artistGenres.includes(genre));
   return intersection.length;
 };
 
-
+/**
+ * Calculates the genre affinity scores for tracks based on artist genres
+ * 
+ * @async
+ * @function calculateGenreAffinityScores
+ * @param {array} tracks - Array of track objects.
+ * @param {array} artistGenres - Array of artist genres. 
+ * @returns {Promise<Object>} An array of tracks with their respective gere affinity scores.
+ */
 const calculateGenreAffinityScores = async (tracks, artistGenres) => {
   const tracksWithScores = [];
 
@@ -132,8 +190,15 @@ const calculateGenreAffinityScores = async (tracks, artistGenres) => {
   return tracksWithScores;
 };
 
-
-const randomizeTracksWithWeighting = (tracksWithScores, limit) => {
+/**
+ * Randomises tracks with weighting based on their affinity scores.
+ * 
+ * @function randomiseTracksWithWeighting
+ * @param {object} tracksWithScores - Array of tracks with affinity scores.
+ * @param {number} limit - Number of tracks to return.
+ * @returns {object} A limited array of randomised tracks based on weights.
+ */
+const randomiseTracksWithWeighting = (tracksWithScores, limit) => {
   const weightedTracks = tracksWithScores.map(track => ({
     track: track.track,
     weight: track.affinityScore + Math.random()
@@ -144,7 +209,13 @@ const randomizeTracksWithWeighting = (tracksWithScores, limit) => {
   return weightedTracks.slice(0, limit).map(weightedTrack => weightedTrack.track);
 };
 
-
+/**
+ * Remove duplicate tracks from a list of trackIds.
+ * 
+ * @function removeDuplicateTracks
+ * @param {array} tracks - An array of tracks objects.
+ * @returns {object} - An array of unique tracks.
+ */
 const removeDuplicateTracks = (tracks) => {
   const seen = new Set();
   const uniqueTracks = [];
@@ -159,12 +230,26 @@ const removeDuplicateTracks = (tracks) => {
   return uniqueTracks;
 };
 
-
+/**
+ * Remove disliked tracks from a list of unique tracks
+ * 
+ * @function removeDislikedTracks
+ * @param {array} uniqueTracks - Array of unique track objects.
+ * @param {array} dislikedSongs - Array of disliked trackIds.
+ * @returns {object} Array of tracks excluding the disliked ones.
+ */
 const removeDislikedTracks = (uniqueTracks, dislikedSongs) => {
   return uniqueTracks.filter(track => !dislikedSongs.includes(track.id));
 };
 
-
+/**
+ * Add liked tracks to a list of tracks, ensuring no duplicates.
+ * 
+ * @function addLikedTracks
+ * @param {array} removedDislikedTracksArr - Array of tracks without disliked tracks.
+ * @param {array} likedSongs - Array of liked track Ids.
+ * @returns {object} - Updated array of tracks including liked tracks.
+ */
 const addLikedTracks = (removedDislikedTracksArr, likedSongs) => {
   likedSongs.forEach(song => {
     if (!removedDislikedTracksArr.some(track => track.id === song)) {
@@ -175,7 +260,15 @@ const addLikedTracks = (removedDislikedTracksArr, likedSongs) => {
   return removedDislikedTracksArr;
 };
 
-
+/**
+ * Shuffle an array randomly using the fisher-yates algorithm.
+ * 
+ * @function shuffleArray
+ * @param {array} array - Array to be shuffled
+ * @returns {array} the shuffled array
+ * 
+ * @source "https://www.geeksforgeeks.org/shuffle-a-given-array-using-fisher-yates-shuffle-algorithm/".
+ */
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

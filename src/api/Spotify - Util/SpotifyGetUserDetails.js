@@ -1,10 +1,16 @@
+/**
+ * Get the current users Spotify details.
+ * 
+ * @async
+ * @function GetUserDetails
+ * @param {string} accessToken - The users Spotify accessToken
+ * @returns {object} - An object containing the current users spotify details
+ * 
+ * @throws {Error} If incorrect data is returned.
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/reference/get-current-users-profile".
+ */
 const GetUserDetails = async (accessToken) => {
-    if (!accessToken) {
-        throw new Error('Access token is required');
-        //get new token
-    }
-
-    
 
     const headers = {
         'Authorization': `Bearer ${accessToken}`,

@@ -1,5 +1,22 @@
-const CreatePlaylist = async (props) => {
-    const { accessToken, userId, playlistName, playlistDescription } = props;
+/**
+ * Creates a playlist on the users account.
+ * 
+ * @async
+ * @function CreatePlaylist
+ * @param {Object} param - The parameters of the function.
+ * @param {string} param.accessToken - The users spotify accessToken
+ * @param {string} param.userId - The users spotifyId
+ * @param {string} param.playlistName - The name to be used for the playlist.
+ * @param {string} param.playlistDescription - The description to be used for the playlist.
+ * 
+ * @returns {string} The playlistId
+ * 
+ * @throws {Error} If the playlist creation fails.
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/reference/create-playlist".
+ */
+const CreatePlaylist = async (params) => {
+    const { accessToken, userId, playlistName, playlistDescription } = params;
 
     if (!accessToken) {
         throw new Error('Access token is required');

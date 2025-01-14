@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState} from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ThemeContext from '../context/ThemeContext';
@@ -11,6 +11,14 @@ import { UserContext } from '../context/UserDetailsContext';
 import { handleStartGame } from '../api/Spotify - Util/HandleRecommendations';
 import { AuthContext } from '../context/AccessTokenContext';
 
+/**
+ * HomeScreen is used in the BottomTabsNavigator and acts as the landing page for the app.
+ * HomeScreen renders components needed for starting the game, 
+ * including: searching for track, artist, or genre, displays search results ready for user 
+ * to choose track and start game
+ * 
+ * @returns {JSX.Element} The rendered HomeScreen component.
+ */
 const HomeScreen = () => {
   const { theme } = useContext(ThemeContext);
   const navigation = useNavigation();
@@ -22,6 +30,10 @@ const HomeScreen = () => {
   const { accessToken } = useContext(AuthContext);
 
 
+  /**
+   * @function handleSearch
+   * searches for items using Spotify's search API.
+   */
   const handleSearch = async () => {
     try {
       const searchResults = await SearchForItem(accessToken, query, market);
@@ -38,11 +50,22 @@ const HomeScreen = () => {
     }
   };
 
+  /**
+   * @function handleItemPress
+   * Handles selection of a search result item.
+   * @param {number} index - Index of the selected item in the search results.
+   */
   const handleItemPress = (index) => {
     setSelectedIndex(index);
     saveSelectedTrack(results[index]);
   };
 
+  /**
+   * @function startGame
+   * @async
+   * 
+   * Starts the game by triggering recommendations for the selected track.
+   */
   const startGame = async () => {
     if (selectedIndex !== null) {
       try {
@@ -124,9 +147,6 @@ const HomeScreen = () => {
           accessibilityLabel="List of tracks in search results"
           accessabilityHint="Select a track to get started"
           data={results}
-          imgSize={55}
-          headingSize={16}
-          descriptionSize={14}
           selectedIndex={selectedIndex}
           onPress={handleItemPress}
         />

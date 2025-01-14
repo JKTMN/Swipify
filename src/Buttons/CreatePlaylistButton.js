@@ -1,5 +1,22 @@
-import React from 'react';
-import { TouchableOpacity , Text, StyleSheet, onPress } from 'react-native';
+import { TouchableOpacity , Text, StyleSheet } from 'react-native';
+
+
+/**
+ * A react native component that is used as a button for calling the handleCreatePlaylist function and navigating
+ * the user to the homescreen
+ * This component utilises A Touchable Opacity for dealing with button functionality
+ * 
+ * @component
+ * @param {Object} props - Properties passed to the component from the parent.
+ * @param {Function} props.onPress - receives the onPress function from the parent
+ * @returns {JSX.Element} The rendered CreatePlaylistButton component
+ * 
+ * @example
+ * // Example usage of the CreatePlaylistButton component
+ * import CreatePlaylistButton from './buttons/CreatePlaylistButton';
+ * 
+ * <CreatePlaylistButton onPress={handleCreatePlaylist} />
+ */
 
 const CreatePlaylistButton = ({onPress}) => {
     return (

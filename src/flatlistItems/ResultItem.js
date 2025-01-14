@@ -2,7 +2,36 @@ import React, { useContext } from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import ThemeContext from '../context/ThemeContext';
 
-const ResultItem = ({ name, image, description, imgSize, headingSize, descriptionSize, artist, isSelected, onPress }) => {
+/**
+ * A react native component that is used as the list item render for the ResultsList
+ * This component utilises A Touchable Opacity for turning the item into a button
+ * 
+ * @component
+ * @param {object} props - Properties passed to the component from the parent.
+ * @param {string} props.name - a string containing the track name
+ * @param {string} props.image - a string containing the url for the playlist cover art
+ * @param {string} props.artist - a string containing the track artists
+ * @param {number} props.isSelected - an index of which track is selected
+ * @param {Function} props.onPress - an onPress function passed from the parent
+ * 
+ * @returns {JSX.Element} The rendered ResultItem component
+ * 
+ * @example
+ * // Example usage of the ResultItem component
+ * import ResultItem from './flatlistItems/ResultItem';
+ * 
+ * renderItem={({ item, index }) => (
+    <ResultItem
+      name={item.name}
+      image={item.image}
+      artist={item.artist}
+      isSelected={index === props.selectedIndex}
+      onPress={() => props.onPress(index)}
+    />
+  )}
+ */
+
+const ResultItem = ({ name, image, artist, isSelected, onPress }) => {
   const { theme } = useContext(ThemeContext);
 
   const styles = StyleSheet.create({
@@ -22,8 +51,8 @@ const ResultItem = ({ name, image, description, imgSize, headingSize, descriptio
       alignItems: 'center',
     },
     image: {
-      width: imgSize,
-      height: imgSize,
+      width: 55,
+      height: 55,
       marginRight: 10,
     },
     textContainer: {
@@ -32,13 +61,13 @@ const ResultItem = ({ name, image, description, imgSize, headingSize, descriptio
       justifyContent: 'center',
     },
     trackName: {
-      fontSize: headingSize,
+      fontSize: 16,
       fontWeight: 'bold',
       color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
       marginBottom: 5,
     },
     artist: {
-      fontSize: descriptionSize,
+      fontSize: 14,
       color: theme === 'dark' ? '#F5F5F5' : '#363636',
     },
   });

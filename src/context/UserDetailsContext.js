@@ -1,16 +1,31 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
 export const UserContext = createContext();
 
+/**
+ * UserContext is a context for managing user-related data such as user details, and market.
+ * This context allows for saving, loading and clearing user details as well as render a user profile.
+ * 
+ * The provider component manages user-related data such as user details, and market.
+ * It also adds the user details to AsyncStorage and allows rendering a profile view.
+ * 
+ * @component 
+ * @param {Object} props - The properties for the component.
+ * @param {Children} props.children - The child components that will use the context.
+ * 
+ * @returns {JSX.Element} A provider wrapping its children with the UserDetailsContext.
+ */
 export const UserProvider = ({ children }) => {
     const [userDetails, setUserDetails] = useState(null);
     const [market, setMarket] = useState(null);
-    const [profilePicture, setProfilePicture] = useState(null);
 
     const STORAGE_KEY = '@user_details';
 
+    /**
+     * Loads user details from AsyncStorage when the app starts.
+     */
     useEffect(() => {
         const loadUserDetails = async () => {
             try {
@@ -26,13 +41,21 @@ export const UserProvider = ({ children }) => {
         loadUserDetails();
     }, []);
 
+    /**
+     * Updates the market states whenever userDetails is updates.
+     */
     useEffect(() => {
         if (userDetails && userDetails.country) {
             setMarket(userDetails.country);
-            setProfilePicture(JSON.stringify(userDetails.images));
         }
     }, [userDetails]);
 
+    /**
+     * Saves user details to both AsyncStorafe and the userDetails state.
+     * 
+     * @function saveUserDetails
+     * @param {array} newDetails - The new user details to save.
+     */
     const saveUserDetails = async (newDetails) => {
         try {
             await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newDetails));
@@ -42,17 +65,31 @@ export const UserProvider = ({ children }) => {
         }
     };
 
+    /**
+     * Clears the user details from both AsyncStorage and local state.
+     * 
+     * @function clearUserDetails
+     */
     const clearUserDetails = async () => {
         try {
             await AsyncStorage.removeItem(STORAGE_KEY);
             setUserDetails(null);
             setMarket(null);
-            setProfilePicture(null);
         } catch (error) {
             console.error('Failed to clear user details:', error);
         }
     };
 
+    /**
+     * Renders the user profile with details such as profile picture, display name, followers,
+     * and product.
+     * If no user is logged in, a message prompting the user to login is rendered instead.
+     * 
+     * @function renderProfile
+     * @param {string} theme - The current theme of the application.
+     * 
+     * @returns {JSX.Element} A react component displaying the users profile or a login message.
+     */
     const renderProfile = (theme) => {
         if (userDetails) {
             return (
@@ -82,7 +119,7 @@ export const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ userDetails, market, saveUserDetails, clearUserDetails, renderProfile, profilePicture }}>
+        <UserContext.Provider value={{ userDetails, market, saveUserDetails, clearUserDetails, renderProfile }}>
             {children}
         </UserContext.Provider>
     );

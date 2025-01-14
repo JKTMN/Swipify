@@ -1,6 +1,20 @@
 import { SPOTIFY_CLIENT_ID } from '@env';
 import * as SecureStore from 'expo-secure-store';
 
+/**
+ * Refreshes the access token using a stored refresh token.
+ * Updates the secure storage with the new access and refresh token, and expiration.
+ * 
+ * @async
+ * @function SpotifyRefreshToken
+ * @param {string} refreshToken - The spotify refresh token used to request a new accessToken.
+ * 
+ * @returns {Promise<void>} Resolves with the new access token if successful.
+ * 
+ * @throws {Error} If the token refresh fails.
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens". 
+ */
 const SpotifyRefreshToken = async (refreshToken) => {
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',

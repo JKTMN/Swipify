@@ -1,5 +1,20 @@
-import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
+
+/**
+ * A react native component that is used as a button for calling the handleLogout function
+ * This component utilises A Touchable Opacity for dealing with button functionality
+ * 
+ * @component
+ * @param {Object} props - Properties passed to the component from the parent
+ * @param {Function} onPress - receives the onPress function from the parent
+ * @returns {JSX.Element} The rendered LogoutButton component
+ * 
+ * @example
+ * // Example usage of the LogoutButton component
+ * import LogoutButton from './buttons/LogoutButton';
+ * 
+ * <LogoutButton onPress={handleLogout} />
+ */
 
 const LogoutButton = ({onPress}) => {
 

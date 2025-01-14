@@ -1,13 +1,35 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+
+/**
+ * ImageUploader component allows the user to select and upload an image
+ * The image is compressed and resized to ensure it is under the 100kb size limit
+ * 
+ * @component
+ * @param {object} props - The properties passed to the component
+ * @param {Function} props.onImageSelect - A callback function that triggers when
+ * an image is successfully selected and compressed. Returns back with the base64 string containing the image as a parameter.
+ * @returns {JSX.Element} the rendered ImageUploader component.
+ * 
+ * @example
+ * //Example usage of the ImageUploader component
+ * import { ImageUploader} from './imageUploader.ImageUploader
+ * <ImageUploader onImageSelect={(base64) => setSelectedImageB64(base64)} />
+ * 
+ */
 
 const ImageUploader = ({ onImageSelect }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageB64, setSelectedImageB64] = useState(null);
 
+    /**
+   * Handles the image selection process.
+   * Requests permissions to access the media library, launches the image picker, 
+   * and compresses the selected image to a base64 format under 100KB.
+   */
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -37,6 +59,13 @@ const ImageUploader = ({ onImageSelect }) => {
       }
     }
   };
+
+    /**
+   * Compresses and resizes an image to ensure that is under 100KB.
+   *
+   * @param {string} uri - The URI of the original image.
+   * @returns {Promise<Object|null>} A Promise resolving to an object containing the compressed image's URI and base64 string, or null if compression fails.
+   */
 
   const compressAndResizeImageToBase64 = async (uri) => {
     const targetSize = 100 * 1024;
@@ -122,6 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: '100%',
+    paddingLeft: 5,
   },
 });
 

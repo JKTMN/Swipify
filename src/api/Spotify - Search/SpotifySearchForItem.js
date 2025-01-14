@@ -1,10 +1,20 @@
+/**
+ * Function that searches for the users inputted query and returns an object containing search results.
+ * 
+ * @async
+ * @function SearchForItem
+ * @param {string} accessToken - The users Spotify accessToken.
+ * @param {string} query - The users search query.
+ * @param {string} market - The users ISO country code.
+ * 
+ * @returns {object} containing the search results with a limit of 5.
+ * 
+ * @throws {Error} if there was no results found in the response
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/reference/search".
+ */
 const SearchForItem = async (accessToken, query, market) => {
     const type = 'track';
-
-    if (!accessToken) {
-        alert('No valid access token available, please log in.');
-        return;
-    }
 
     const headers = {
         Authorization: `Bearer ${accessToken}`,

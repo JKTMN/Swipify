@@ -7,22 +7,31 @@ import { UserContext } from '../context/UserDetailsContext';
 import { AuthContext } from '../context/AccessTokenContext';
 import { GetUserDetails } from '../api/Spotify - Util/SpotifyGetUserDetails';
 import { SelectCountry } from 'react-native-element-dropdown';
-
-import { useNavigation } from '@react-navigation/native';
-
 import LogoutButton from '../Buttons/LogoutButton';
 import { PlaylistsContext } from '../context/PlaylistsContext';
+
+/**
+ * AccountScreen is screen used in the BottomTabsNavigator and is used for rendering
+ * the users spotify profile, link account button, theme toggle and logout button.
+ * 
+ * @returns {JSX.Element} The rendered AccountScreen component.
+ */
 
 const AccountScreen = () => {
   const systemTheme = useColorScheme();
   const { theme, toggleTheme, useSystemTheme } = useContext(ThemeContext);
   const { accessToken, clearToken } = useContext(AuthContext);
   const { saveUserDetails, renderProfile, clearUserDetails } = useContext(UserContext);
-
   const { clearPlaylists } = useContext(PlaylistsContext);
-  const navigation = useNavigation();
-
   const [authCode, setAuthCode] = useState(null);
+
+  /**
+   * Handles the linking of the users Spotify account.
+   * Fetches user details and saves them in the UserContext.
+   * @async
+   * @function handleLinkAccount
+   * @returns {Promise<void>}
+   */
 
   const handleLinkAccount = async () => {
     authenticateWithSpotify();
@@ -40,6 +49,13 @@ const AccountScreen = () => {
     { label: 'System Theme', value: 'system' },
   ];
 
+  /**
+   * Handles theme change based on the selected option from the dropdown component.
+   * @function handleThemeChange
+   * @param {Object} selected - The selected theme option.
+   * @param {string} selected.value - The value of the selected theme
+   */
+
   const handleThemeChange = (selected) => {
     if (selected.value === 'system') {
       useSystemTheme();
@@ -47,6 +63,11 @@ const AccountScreen = () => {
       toggleTheme(selected.value);
     }
   };
+
+  /**
+   * Logs the user out of their account by clearing tokens, user details, and playlists.
+   * @function handleLogout
+   */
 
   const handleLogout = () => {
     clearToken();

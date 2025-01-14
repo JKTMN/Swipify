@@ -1,13 +1,26 @@
-import React, { useState, useContext} from 'react';
+import React, { useContext} from 'react';
 import { View, StyleSheet, Image, Text, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import ThemeContext from '../context/ThemeContext';
 
+/**
+ * PlaylistDetailsScreen is used in the StackNavigator and is used for displaying
+ * details about the chosen playlist.
+ * 
+ * @returns {JSX.Element} The rendered PlaylistDetailsScreen component.
+ */
 const PlaylistDetailsScreen = () => {
     const { theme } = useContext(ThemeContext);
     const route = useRoute();
     const { name, description, image, tracks } = route.params;
 
+    /**
+     * @function truncateText
+     * 
+     * @param {string} text - The text that needs to be truncated.
+     * @param {number} length - The length the string should be truncated at.
+     * @returns 
+     */
     const truncateText = (text, length) => {
         if (text.length > length) {
             return text.substring(0, length) + '...';

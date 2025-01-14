@@ -3,6 +3,18 @@ import { SPOTIFY_CLIENT_ID, SCOPES } from '@env';
 import { exchangeAuthCodeForAccessToken } from './ExchangeAccessToken';
 import { REDIRECT_URI } from '../Spotify - Util/CreateRedirectURI';
 
+/**
+ * Authenticates the user with Spotify using OAuth 2.0.
+ * 
+ * @async
+ * @function authenticateWithSpotify
+ * @returns {Promise<void>} resolves when the authentication process is complete.
+ * Stores the access token securely for future use.
+ * 
+ * @throws {Error} if Authentication or token exchange fails.
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/tutorials/code-flow".
+ */
 const authenticateWithSpotify = async () => {
   try {
     const authUrl = `https://accounts.spotify.com/authorize?${new URLSearchParams({
