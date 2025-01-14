@@ -55,4 +55,4 @@ A React Native app that gamifies the creation of Spotify playlists by letting us
    - If the problem persists after restarting, reauthenticate and restart the app again.
 
 ### 2. **Error in Redirect URI:**
-   - If you encounter errors related to the Redirect URI, double-check that the IP address in your `.env` file matches the one shown when you run `expo start`.
+   - If you encounter errors related to the Redirect URI, double-check that the IP address in your developer dashboard matches the one shown when you run `expo start`.
