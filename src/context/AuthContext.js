@@ -1,15 +1,25 @@
 import React, { createContext, useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 
-// Create the AuthContext
 export const AuthContext = createContext();
 
-// AuthProvider Component
+
+/**
+ * AuthPorvider provides authentication state and actions to its children.
+ * 
+ * @param {children} children - The child components that require access to AuthContext.
+ * @returns {JSX.Element} Context wrapping the children
+ */
 export const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
 
-  // Clear all tokens from state and SecureStore
+  /**
+   * Clear all tokens from state and securestore.
+   * 
+   * @async
+   * @function clearTokens
+   */
   const clearTokens = async () => {
     setAccessToken(null);
     setRefreshToken(null);
@@ -18,6 +28,12 @@ export const AuthProvider = ({ children }) => {
     await SecureStore.deleteItemAsync('refreshToken');
   };
 
+  /**
+   * Stores tokens in securestore whenever they are updated.
+   * 
+   * @async
+   * @function storeTokens
+   */
   useEffect(() => {
     const storeTokens = async() => {
       if (accessToken && refreshToken) {
@@ -28,6 +44,12 @@ export const AuthProvider = ({ children }) => {
     storeTokens();
   }, [accessToken && refreshToken]);
 
+  /**
+   * Loads tokens from securestore on intitial render if not already in state.
+   * 
+   * @async
+   * @function loadTokens
+   */
   useEffect(() => {
     const loadTokens = async() => {
       if (!accessToken && !refreshToken) {

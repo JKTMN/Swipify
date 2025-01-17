@@ -22,7 +22,7 @@ const fetchGenresForArtists = async (artistIds, accessToken) => {
   
       const data = await response.json();
       if (data && data.artists) {
-        return data.artists.map(artist => artist.genres); // Return genres for each artist
+        return data.artists.map(artist => artist.genres);
       } else {
         console.error("No genres found for artists.");
         return [];
