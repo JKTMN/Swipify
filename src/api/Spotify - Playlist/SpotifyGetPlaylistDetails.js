@@ -32,6 +32,7 @@ const getPlaylistDetails = async (accessToken, playlistId, market) => {
                     name: track.name,
                     artists: track.artists.map(artist => artist.name).join(', '),
                     image: track.album.images[0]?.url,
+                    explicit: track.explicit,
                 };
             });
 

@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView } from 'react-native';
 import ThemeContext from '../context/ThemeContext';
 import Deck from '../deck/Deck';
 import { TracklistContext } from '../context/GameTracklist';
-import { AuthContext } from '../context/AccessTokenContext';
+import { AuthContext } from '../context/AuthContext';
 import { UserContext } from '../context/UserDetailsContext';
 
 /**
@@ -22,7 +22,7 @@ const GameScreen = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
+      backgroundColor: theme === 'dark' ? '#121212' : '#FCFCFC',
     },
     imgContainer: {
       padding: 10,
@@ -58,8 +58,6 @@ const GameScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
         <Deck 
-        // accessible={true}
-        // accessibilityLabel="Deck of tracks, swipe right to like, swipe left to dislike, swipe down to go back to previous track"
         trackIds={gameTrackIds} 
         handleLike={handleLike} 
         handleDislike={handleDislike} 

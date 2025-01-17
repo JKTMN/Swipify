@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {ThemeProvider} from './src/context/ThemeContext';
 import StackNavigator from './src/navigation/MainNavigation';
-import { AuthProvider } from './src/context/AccessTokenContext';
+import { AuthProvider } from './src/context/AuthContext';
 import { UserProvider } from './src/context/UserDetailsContext';
 import { TracklistProvider } from './src/context/GameTracklist';
 import { PlaylistsProvider } from './src/context/PlaylistsContext';
@@ -28,18 +28,18 @@ import { PlaylistsProvider } from './src/context/PlaylistsContext';
 
 export default function App() {
   return (
-    <PlaylistsProvider>
-      <TracklistProvider>
-        <UserProvider>
-          <ThemeProvider>
-            <AuthProvider>
-              <NavigationContainer>
-                <StackNavigator />
-              </NavigationContainer>
-            </AuthProvider>
-          </ThemeProvider>
-        </UserProvider>
-      </TracklistProvider>
-    </PlaylistsProvider>
+    <AuthProvider>
+      <PlaylistsProvider>
+        <TracklistProvider>
+          <UserProvider>
+            <ThemeProvider>
+                <NavigationContainer>
+                  <StackNavigator />
+                </NavigationContainer>
+            </ThemeProvider>
+          </UserProvider>
+        </TracklistProvider>
+      </PlaylistsProvider>
+    </AuthProvider>
   );
 }

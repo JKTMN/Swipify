@@ -22,7 +22,7 @@ const PlaylistScreen = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
+      backgroundColor: theme === 'dark' ? '#121212' : '#FCFCFC',
       alignItems: 'center',
       padding: 20,
       paddingTop: 30,

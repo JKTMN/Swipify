@@ -1,4 +1,5 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { AuthContext } from './AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
@@ -20,11 +21,12 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [userDetails, setUserDetails] = useState(null);
     const [market, setMarket] = useState(null);
+    const { accessToken } = useContext(AuthContext);
 
     const STORAGE_KEY = '@user_details';
 
     /**
-     * Loads user details from AsyncStorage when the app starts.
+     * Loads the user details from async storage on mount.
      */
     useEffect(() => {
         const loadUserDetails = async () => {
@@ -40,45 +42,41 @@ export const UserProvider = ({ children }) => {
 
         loadUserDetails();
     }, []);
-
     /**
-     * Updates the market states whenever userDetails is updates.
+     * Makes a call to the spotify API to get the current users details and stores them in AsyncStorage
+     * Updates when the accessToken updates
+     * @async
+     * @function fetchUserProfile
      */
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            if (accessToken) {
+                try {
+                    const response = await fetch('https://api.spotify.com/v1/me', {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    });
+                    const data = await response.json();
+                    if (data) {
+                        setUserDetails(data);
+                        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    }
+                } catch (error) {
+                    console.error('Error fetching user profile:', error);
+                }
+            }
+        };
+    
+        fetchUserProfile();
+    }, [accessToken]);
+
+    //Sets the market state when the user details update
     useEffect(() => {
         if (userDetails && userDetails.country) {
             setMarket(userDetails.country);
         }
     }, [userDetails]);
-
-    /**
-     * Saves user details to both AsyncStorafe and the userDetails state.
-     * 
-     * @function saveUserDetails
-     * @param {array} newDetails - The new user details to save.
-     */
-    const saveUserDetails = async (newDetails) => {
-        try {
-            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newDetails));
-            setUserDetails(newDetails);
-        } catch (error) {
-            console.error('Failed to save user details:', error);
-        }
-    };
-
-    /**
-     * Clears the user details from both AsyncStorage and local state.
-     * 
-     * @function clearUserDetails
-     */
-    const clearUserDetails = async () => {
-        try {
-            await AsyncStorage.removeItem(STORAGE_KEY);
-            setUserDetails(null);
-            setMarket(null);
-        } catch (error) {
-            console.error('Failed to clear user details:', error);
-        }
-    };
 
     /**
      * Renders the user profile with details such as profile picture, display name, followers,
@@ -94,13 +92,13 @@ export const UserProvider = ({ children }) => {
         if (userDetails) {
             return (
                 <View style={[styles.profileContainer, { borderBottomColor: theme === 'dark' ? '#444' : '#ddd' }]}>
-                    <Image source={{ uri: userDetails.images }} style={[styles.profileImage, {borderColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}]} />
+                    <Image source={{ uri: userDetails.images[0]?.url }} style={[styles.profileImage, {borderColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}]} />
                     <Text style={[styles.displayName, { color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B' }]}>
-                        {userDetails.displayName}
+                        {userDetails.display_name}
                     </Text>
                     <View style={styles.rowContainer}>
                         <Text style={[styles.followers, { color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B' }]}>
-                            {userDetails.followers} Followers
+                            {userDetails.followers.total} Followers
                         </Text>
                         <Text style={styles.product}>
                             {userDetails.product}
@@ -118,8 +116,21 @@ export const UserProvider = ({ children }) => {
         );
     };
 
+    /**
+     * Clears the user details in state and AsyncStorage
+     */
+    const clearUserDetails = async () => {
+        try {
+            await AsyncStorage.removeItem(STORAGE_KEY);
+            setUserDetails(null);
+            setMarket(null);
+        } catch (error) {
+            console.error('Failed to clear user details:', error);
+        }
+    };
+
     return (
-        <UserContext.Provider value={{ userDetails, market, saveUserDetails, clearUserDetails, renderProfile }}>
+        <UserContext.Provider value={{ userDetails, market, renderProfile, clearUserDetails }}>
             {children}
         </UserContext.Provider>
     );

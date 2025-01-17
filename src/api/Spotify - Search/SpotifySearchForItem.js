@@ -44,8 +44,10 @@ const SearchForItem = async (accessToken, query, market) => {
                     description: track.album.name,
                     artist: track.artists[0]?.name,
                     image: track.album.images[0]?.url,
+                    explicit: track.explicit,
                 };
             });
+
 
             return tracks || [];
         } else {

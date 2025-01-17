@@ -62,6 +62,7 @@ const PlaylistItem = (props) => {
           width: 60,
           height: 60,
           marginRight: 10,
+          borderRadius: 4,
         },
         textContainer: {
           flex: 1,

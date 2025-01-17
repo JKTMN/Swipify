@@ -30,13 +30,13 @@ function BottomTabNavigator() {
         screenOptions={{ tabBarActiveTintColor: '#1ED750', 
             tabBarInactiveTintColor: theme === 'dark' ? '#888' : '#555',
             tabBarStyle: {
-                backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7',
+                backgroundColor: theme === 'dark' ? '#121212' : '#F7F7F7',
                 borderTopColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7',
             },
             headerStyle : {
-                backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7',
+                backgroundColor: theme === 'dark' ? '#121212' : '#F7F7F7',
             },
-            headerTintColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+            headerTintColor: theme === 'dark' ? '#FCFCFC' : '#121212',
             headerTitleStyle: {
                 fontWeight: 'bold',
             },
@@ -44,7 +44,7 @@ function BottomTabNavigator() {
             <Tab.Screen name="Home" component={HomeScreen} 
             options={{ tabBarIcon: ({ color }) => <Ionicons name="home" size={30} color={color} />, 
             headerTitleAlign: 'center', 
-            headerStyle: {height: 120, backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7'},
+            headerStyle: {height: 120, backgroundColor: theme === 'dark' ? '#121212' : '#F7F7F7'},
             headerTitle: () => (
                 <Image 
                   source={require('../../assets/logo/swipifylogo.png')} 
@@ -59,7 +59,7 @@ function BottomTabNavigator() {
             name="playlist-music-outline" size={30} color={color} />, 
             headerTitleAlign: 'center', 
             headerShown: true,
-            headerStyle: {backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7', height: 100},
+            headerStyle: {backgroundColor: theme === 'dark' ? '#121212' : '#F7F7F7', height: 100},
             headerLeft: () => (
                 <Image 
                   source={require('../../assets/logo/swipifylogoCropped.png')}
@@ -85,7 +85,7 @@ function StackNavigator() {
         <Stack.Navigator screenOptions={{headerTitleStyle: {fontWeight: 'bold'}}}>
             <Stack.Screen name="Back" component={BottomTabNavigator} options={{ headerShown: false }}/>
             <Stack.Screen name="GameScreen" component={GameScreen} options={{
-                headerStyle: {backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7', height: 110}, 
+                headerStyle: {backgroundColor: theme === 'dark' ? '#121212' : '#F7F7F7', height: 110}, 
                 headerTintColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
                 headerTitleStyle: {
                     fontWeight: 'bold',
@@ -98,14 +98,14 @@ function StackNavigator() {
                     />
                 )}}/>
             <Stack.Screen name="EditPlaylistDetails" component={EditPlaylistDetailsScreen} options={{
-                headerStyle: {backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7'}, 
+                headerStyle: {backgroundColor: theme === 'dark' ? '#121212' : '#F7F7F7'}, 
                 headerTintColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
                 }}/>
             <Stack.Screen name="PlaylistDetails" component={PlaylistDetailsScreen} options={{
-                headerStyle: {backgroundColor: theme === 'dark' ? '#1F1F1F' : '#F7F7F7'},
+                headerStyle: {backgroundColor: theme === 'dark' ? '#121212' : '#F7F7F7'},
                 headerTintColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
                 headerTitleStyle: {
                     fontWeight: 'bold',

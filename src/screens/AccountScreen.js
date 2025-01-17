@@ -1,11 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, useColorScheme, TouchableOpacity } from 'react-native';
 import ThemeContext from '../context/ThemeContext';
 import LinkAccountButton from '../Buttons/LinkAccountButton';
 import authenticateWithSpotify from '../api/Spotify - Auth/spotifyAuth';
 import { UserContext } from '../context/UserDetailsContext';
-import { AuthContext } from '../context/AccessTokenContext';
-import { GetUserDetails } from '../api/Spotify - Util/SpotifyGetUserDetails';
+import { AuthContext } from '../context/AuthContext';
 import { SelectCountry } from 'react-native-element-dropdown';
 import LogoutButton from '../Buttons/LogoutButton';
 import { PlaylistsContext } from '../context/PlaylistsContext';
@@ -20,28 +19,25 @@ import { PlaylistsContext } from '../context/PlaylistsContext';
 const AccountScreen = () => {
   const systemTheme = useColorScheme();
   const { theme, toggleTheme, useSystemTheme } = useContext(ThemeContext);
-  const { accessToken, clearToken } = useContext(AuthContext);
-  const { saveUserDetails, renderProfile, clearUserDetails } = useContext(UserContext);
+  const { clearTokens, setAccessToken, setRefreshToken} = useContext(AuthContext);
+  const { renderProfile, clearUserDetails } = useContext(UserContext);
   const { clearPlaylists } = useContext(PlaylistsContext);
-  const [authCode, setAuthCode] = useState(null);
 
   /**
    * Handles the linking of the users Spotify account.
-   * Fetches user details and saves them in the UserContext.
+   * Sets the tokens in the AuthContext states
    * @async
    * @function handleLinkAccount
    * @returns {Promise<void>}
    */
-
   const handleLinkAccount = async () => {
-    authenticateWithSpotify();
-    try {
-      const userDetails = await GetUserDetails(accessToken);
-      saveUserDetails(userDetails);
-    } catch (err) {
-      console.error('Error in handleGetUserDetails:', err);
+    const tokens = await authenticateWithSpotify();
+    if (tokens) {
+      setAccessToken(tokens[0]);
+      setRefreshToken(tokens[1]);
     }
-  };
+    console.log('Spotify account linked successfully');
+};
 
   const themeOptions = [
     { label: 'Light Theme', value: 'light' },
@@ -70,7 +66,7 @@ const AccountScreen = () => {
    */
 
   const handleLogout = () => {
-    clearToken();
+    clearTokens();
     clearUserDetails();
     clearPlaylists();
   };
@@ -78,7 +74,7 @@ const AccountScreen = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
+      backgroundColor: theme === 'dark' ? '#121212' : '#FCFCFC',
     },
     content: {
       flex: 1,
@@ -132,37 +128,45 @@ const AccountScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {renderProfile(theme)}
-      <View style={styles.content}>
-        <View accessability={true} style={styles.loginContainer}>
-          <Text accessabilityLabel="Press the button below to link your spotify account" style={styles.heading}>Press the button below to link your Spotify account!</Text>
-          <LinkAccountButton onPress={handleLinkAccount} />
-          {authCode}
+    {renderProfile(theme)}
+
+    <View style={styles.content}>
+        <View accessibility={true} style={styles.loginContainer}>
+            <Text
+                accessibilityLabel="Press the button below to link your Spotify account"
+                style={styles.heading}
+            >
+                Press the button below to link your Spotify account!
+            </Text>
+            <LinkAccountButton onPress={handleLinkAccount} />
         </View>
+
         <View>
-          <View accessability={true} style={styles.dropdownContainer}>
-            <Text accessabilityLabel="Toggle theme" style={styles.heading}>Toggle theme:</Text>
-            <SelectCountry
-              style={styles.dropdown}
-              selectedTextStyle={styles.selectedText}
-              placeholderStyle={styles.placeholderText}
-              maxHeight={200}
-              valueField="value"
-              labelField="label"
-              data={themeOptions}
-              placeholder="Select Theme"
-              searchPlaceholder="Search..."
-              dropdownStyle={styles.dropdownMenu}
-              onChange={handleThemeChange}
-            /> {/* Add accessability here! */}
-          </View>
+            <View accessibility={true} style={styles.dropdownContainer}>
+                <Text accessibilityLabel="Toggle theme" style={styles.heading}>
+                    Toggle theme:
+                </Text>
+                <SelectCountry
+                    style={styles.dropdown}
+                    selectedTextStyle={styles.selectedText}
+                    placeholderStyle={styles.placeholderText}
+                    maxHeight={200}
+                    valueField="value"
+                    labelField="label"
+                    data={themeOptions}
+                    placeholder="Select Theme"
+                    searchPlaceholder="Search..."
+                    dropdownStyle={styles.dropdownMenu}
+                    onChange={handleThemeChange}
+                />
+            </View>
         </View>
 
         <View style={styles.logoutBtnContainer}>
-          <LogoutButton onPress={handleLogout}/>
+            <LogoutButton onPress={handleLogout} />
         </View>
-      </View>
-    </SafeAreaView>
+    </View>
+</SafeAreaView>
   );
 };
 

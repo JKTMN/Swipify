@@ -9,7 +9,7 @@ import { SearchForItem } from '../api/Spotify - Search/SpotifySearchForItem';
 import { TracklistContext } from '../context/GameTracklist';
 import { UserContext } from '../context/UserDetailsContext';
 import { handleStartGame } from '../api/Spotify - Util/HandleRecommendations';
-import { AuthContext } from '../context/AccessTokenContext';
+import { AuthContext } from '../context/AuthContext';
 
 /**
  * HomeScreen is used in the BottomTabsNavigator and acts as the landing page for the app.
@@ -90,7 +90,7 @@ const HomeScreen = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
+      backgroundColor: theme === 'dark' ? '#121212' : '#FCFCFC',
     },
     scrollContent: {
       flexGrow: 1,

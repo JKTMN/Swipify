@@ -32,6 +32,7 @@ const fetchTrackDetails = async (accessToken, tracks, market) => {
                     description: track.album.name,
                     artist: track.artists?.map(artist => artist.name).join(', '),
                     image: track.album.images[0]?.url,
+                    explicit: track?.explicit,
                 };
             });
             return tracks;

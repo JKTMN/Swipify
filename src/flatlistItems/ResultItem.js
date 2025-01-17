@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import ThemeContext from '../context/ThemeContext';
+import { ExplicitIcon } from '../ExplicitIcon/ExplicitIcon';
 
 /**
  * A react native component that is used as the list item render for the ResultsList
@@ -13,6 +14,7 @@ import ThemeContext from '../context/ThemeContext';
  * @param {string} props.artist - a string containing the track artists
  * @param {number} props.isSelected - an index of which track is selected
  * @param {Function} props.onPress - an onPress function passed from the parent
+ * @param {bool} props.explicit - A bool stating if the track contains explicit lyrics or content
  * 
  * @returns {JSX.Element} The rendered ResultItem component
  * 
@@ -31,7 +33,7 @@ import ThemeContext from '../context/ThemeContext';
   )}
  */
 
-const ResultItem = ({ name, image, artist, isSelected, onPress }) => {
+const ResultItem = ({ name, image, artist, isSelected, onPress, explicit }) => {
   const { theme } = useContext(ThemeContext);
 
   const styles = StyleSheet.create({
@@ -54,21 +56,34 @@ const ResultItem = ({ name, image, artist, isSelected, onPress }) => {
       width: 55,
       height: 55,
       marginRight: 10,
+      borderRadius: 4,
     },
     textContainer: {
       flex: 1,
       flexDirection: 'column',
       justifyContent: 'center',
     },
+    trackNameContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 5,
+    },
     trackName: {
       fontSize: 16,
       fontWeight: 'bold',
-      color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B',
+      color: theme === 'dark' ? '#FCFCFC' : '#121212',
       marginBottom: 5,
+      marginRight: 5,
     },
     artist: {
       fontSize: 14,
       color: theme === 'dark' ? '#F5F5F5' : '#363636',
+    },
+    spotifyLogo: {
+      height: 40,
+      width: 40,
+      justifyContent: 'flex-end',
+      marginRight: 30,
     },
   });
 
@@ -82,9 +97,15 @@ const ResultItem = ({ name, image, artist, isSelected, onPress }) => {
         <View style={styles.row}>
           <Image accessabilityLabel="Track cover image" source={{ uri: image }} style={styles.image} />
           <View style={styles.textContainer}>
-            <Text accessabilityLabel={`Track name: ${name}`} style={styles.trackName}>{name}</Text>
-            <Text accessabilityLabel={`Track artists: ${artist}`}style={styles.artist}>{artist}</Text>
+          <View style={styles.trackNameContainer}>
+              <Text accessibilityLabel={`Track name: ${name}`} style={styles.trackName}>{name}</Text>
+              {explicit && <ExplicitIcon />}
+            </View>
+            <Text accessabilityLabel={`By: ${artist}`}style={styles.artist}>{artist}</Text>
           </View>
+          <Image accessabilityLabel="Spotify Logo"
+           source={theme === 'dark' ? require('../../assets/SpotifyLogo/Spotify_Logo_White.png') : require('../../assets/SpotifyLogo/Spotify_Logo_Black.png')} 
+           style={styles.spotifyLogo} />
         </View>
       </View>
     </TouchableOpacity>

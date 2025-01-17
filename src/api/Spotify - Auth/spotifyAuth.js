@@ -8,14 +8,14 @@ import { REDIRECT_URI } from '../Spotify - Util/CreateRedirectURI';
  * 
  * @async
  * @function authenticateWithSpotify
- * @returns {Promise<void>} resolves when the authentication process is complete.
- * Stores the access token securely for future use.
+ * @returns {array} Returns an array containing the access and refresh token.
  * 
  * @throws {Error} if Authentication or token exchange fails.
  * 
  * @source "https://developer.spotify.com/documentation/web-api/tutorials/code-flow".
  */
 const authenticateWithSpotify = async () => {
+
   try {
     const authUrl = `https://accounts.spotify.com/authorize?${new URLSearchParams({
       response_type: 'code',
@@ -29,7 +29,8 @@ const authenticateWithSpotify = async () => {
     if (response.type === 'success' && response.url) {
       const code = response.url.split('code=')[1];
       if (code) {
-        const accessToken = await exchangeAuthCodeForAccessToken(code);
+        const tokens = await exchangeAuthCodeForAccessToken(code);
+        return tokens;
       }
     } else {
       console.error('OAuth failed or was canceled');

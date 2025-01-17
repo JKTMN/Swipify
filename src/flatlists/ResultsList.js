@@ -37,6 +37,7 @@ export default function ResultList(props) {
             name={item.name}
             image={item.image}
             artist={item.artist}
+            explicit={item.explicit}
             isSelected={index === props.selectedIndex}
             onPress={() => props.onPress(index)}
           />
