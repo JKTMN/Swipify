@@ -1,9 +1,37 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-
 import ThemeContext from '../context/ThemeContext';
+
+/**
+ * A react native component that is used as the list item render for the PlaylistList
+ * This component utilises A Touchable Opacity for turning the item into a button
+ * 
+ * @component
+ * @param {object} props - Props the properties passed to the component
+ * @param {string} props.playlistId - a string containing a playlistId
+ * @param {string} props.name - a string containing the playlist name
+ * @param {string} props.description - a string containing the playlist description
+ * @param {string} props.image - a string containing the url for the playlist cover art
+ * @param {array} props.tracks - an array containing the track data in the playlist
+ * 
+ * @returns {JSX.Element} The rendered PlaylistItem component
+ * 
+ * @example
+ * // Example usage of the PlaylistItem component
+ * import PlaylistItem from './flatlistItems/PlaylistItem';
+ * 
+  * renderItem={({ item }) => (
+      <PlaylistItem
+          playlistId={item.playlistId}
+          name={item.name}
+          description={item.description}
+          image={item.image}
+          tracks={item.tracks}
+      />
+    )}
+ */
 
 const PlaylistItem = (props) => {
     const { theme } = useContext(ThemeContext);
@@ -34,6 +62,7 @@ const PlaylistItem = (props) => {
           width: 60,
           height: 60,
           marginRight: 10,
+          borderRadius: 4,
         },
         textContainer: {
           flex: 1,

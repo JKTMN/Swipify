@@ -1,10 +1,19 @@
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '@env';
-import * as SecureStore from 'expo-secure-store';
-
 import { REDIRECT_URI } from '../Spotify - Util/CreateRedirectURI';
 
+/**
+ * Exchanges an authorization code for an access and refresh token.
+ * 
+ * @async
+ * @function exchangeAuthCodeForAccessToken
+ * @param {string} authCode - The authorization code obtained from Spotify's Auth endpoint.
+ * @returns {array} An array containing the access and refresh token.
+ * 
+ * @throws {Error} If the exchange process fails.
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/tutorials/code-flow"
+ */
 const exchangeAuthCodeForAccessToken = async (authCode) => {
-
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
@@ -26,9 +35,9 @@ const exchangeAuthCodeForAccessToken = async (authCode) => {
 
     const data = await response.json();
     if (response.ok) {
-      await SecureStore.setItemAsync('spotifyAccessToken', data.access_token);
-      await SecureStore.setItemAsync('spotifyRefreshToken', data.refresh_token);
-      return data.access_token;
+      const accessToken = data.access_token;
+      const refreshToken = data.refresh_token;
+      return [accessToken, refreshToken];
     } else {
       console.error('Error fetching access token:', data);
       throw new Error('Failed to exchange auth code for access token');

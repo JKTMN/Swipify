@@ -1,6 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import WebView from 'react-native-webview';
+
+/**
+ * A react native component that displays a song card with an embedded Spotify player.
+ * This component utilises a WebView to render the spotify iframe player.
+ * 
+ * @component
+ * @param {Object} props - Properties passed to the component from the parent.
+ * @param {string} props.trackId - The spotify track ID for the song that should be played
+ * @param {Function} props.onPress - receives the onPress function from the parent
+ * @returns {JSX.Element} The rendered SongCard component
+ * 
+ * @example
+ * // Example usage of the SwipeButton component
+ * import SongCard from './cards/SongCard';
+ * 
+ * renderCard={(song) => <SongCard trackId={song} />}
+ */
 
 const SongCard = ({ trackId }) => {
     const [htmlContent, setHtmlContent] = useState('');

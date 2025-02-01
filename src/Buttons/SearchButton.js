@@ -1,5 +1,21 @@
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
+/**
+ * A react native component that is used as a button for handling the searchForItem request
+ * This component utilises A Touchable Opacity for dealing with button functionality
+ * 
+ * @component
+ * @param {Object} props - Properties passed to the component from the parent
+ * @param {Function} props.onPress - receives the onPress function from the parent
+ * @returns {JSX.Element} The rendered CreatePlaylistButton component
+ * 
+ * @example
+ * // Example usage of the SearchButton component
+ * import SearchButton from './buttons/SearchButton';
+ * 
+ * <CreatePlaylistButton onPress={handleSearch} />
+ */
+
 const SearchButton = ({onPress}) => {
 
     const styles = StyleSheet.create ({

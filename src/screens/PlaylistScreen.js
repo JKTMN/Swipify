@@ -1,22 +1,28 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ThemeContext from '../context/ThemeContext';
-
 import PlaylistList from '../flatlists/PlaylistsList';
 import CreatePlaylistButton from '../Buttons/CreateNewPlaylistButton';
 import { PlaylistsContext } from '../context/PlaylistsContext';
 
+/**
+ * PlaylistScreen is a screen used in BottomTabsNavigator and is used for displaying the playlists the user has 
+ * created using the application.
+ * 
+ * @returns {JSX.Element} The rendered PlaylistsScreen component.
+ */
+
 const PlaylistScreen = () => {
   const { theme } = useContext(ThemeContext);
   const navigation = useNavigation();
-
   const { playlists } = useContext(PlaylistsContext);
+
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme === 'dark' ? '#2B2B2B' : '#FCFCFC',
+      backgroundColor: theme === 'dark' ? '#121212' : '#FCFCFC',
       alignItems: 'center',
       padding: 20,
       paddingTop: 30,

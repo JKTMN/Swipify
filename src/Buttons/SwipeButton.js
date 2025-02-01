@@ -1,5 +1,23 @@
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
 
+/**
+ * A react native component that is used as a substitute swiper button for swiping the game deck of tracks
+ * This component utilises A Touchable Opacity for dealing with button functionality
+ * 
+ * @component
+ * @param {Object} props - Properties passed to the component from the parent
+ * @param {string} props.text - a string which should be displayed in the button
+ * @param {string} props.colour - a string which is used for setting the button colour
+ * @param {Function} props.onPress - receives the onPress function from the parent
+ * @returns {JSX.Element} The rendered CreatePlaylistButton component
+ * 
+ * @example
+ * // Example usage of the SwipeButton component
+ * import SwipeButton from './buttons/SwipeButton';
+ * 
+ * <SwipeButton text={'No'} colour={'red'} onPress={handleSwipeLeft} />
+ */
+
 const SwipeButton = ({text, colour, onPress}) => {
 
     const styles = StyleSheet.create ({

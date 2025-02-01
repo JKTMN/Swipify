@@ -2,11 +2,29 @@ import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+/**
+ * A react native component that is used as a button for navigating to the
+ * homescreen from the playlists screen.
+ * This component utilises A Touchable Opacity for dealing with button functionality
+ * 
+ * The button calls the goToHomeScreen function which uses navigation to direct the user
+ * to the homescreen.
+ * 
+ * @returns {JSX.Element} The rendered CreateNewPlaylistButton component
+ * 
+ * @example
+ * // Example usage of the CreateNewPlaylistButton component
+ * import CreateNewPlaylistButton from './buttons/CreateNewPlaylistButton';
+ * 
+ * <CreateNewPlaylistButton />
+ */
+
 const CreateNewPlaylistButton = () => {
     const navigation = useNavigation();
-        const goToHomeScreen = () => {
-            navigation.navigate('Home');
-          };
+    const goToHomeScreen = () => {
+        navigation.navigate('Home');
+        };
+
     return (
         <TouchableOpacity 
         accessability={true}

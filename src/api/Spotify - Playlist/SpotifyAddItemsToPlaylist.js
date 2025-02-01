@@ -1,10 +1,19 @@
-const AddItemsToPlaylist = async (props) => {
-    const { accessToken, playlistId, uris } = props;
-
-    if (!accessToken) {
-        throw new Error('Access token is required');
-        //get new token
-    }
+/**
+ * Adds tracks to a specified Spotify playlist using a comma separated string of trackUris.
+ * 
+ * @async
+ * @function AddItemsToPlaylist
+ * @param {Object} params - The function parameters
+ * @param {string} params.accessToken - The users spotify accessToken
+ * @param {string} params.playlistId - The unique ID of the playlist to update.
+ * @param {string} params.uris - A comma separated string of trackUris.
+ * 
+ * @throws {Error} if the tracks fail to be added.
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/reference/add-tracks-to-playlist".
+ */
+const AddItemsToPlaylist = async (params) => {
+    const { accessToken, playlistId, uris } = params;
 
     const headers = {
         'Authorization': `Bearer ${accessToken}`,

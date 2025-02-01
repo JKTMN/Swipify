@@ -1,5 +1,22 @@
-import React from 'react';
 import { TouchableOpacity , Text, StyleSheet } from 'react-native';
+
+
+/**
+ * A react native component that is used as a button for calling the startGame function and navigating
+ * the user to the gamescreen
+ * This component utilises A Touchable Opacity for dealing with button functionality
+ * 
+ * @component
+ * @param {Object} props - Properties passed to the component from the parent
+ * @param {Function} props.onPress - receives the onPress function from the parent
+ * @returns {JSX.Element} The rendered GetStartedButton component
+ * 
+ * @example
+ * // Example usage of the GetStartedButton component
+ * import GetStartedButton from './buttons/GetStartedButton';
+ * 
+ * <GetStartedButton onPress={startGame} />
+ */
 
 const GetStartedButton = ({onPress}) => {
     return (

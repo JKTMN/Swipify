@@ -1,16 +1,33 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { AuthContext } from './AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
 export const UserContext = createContext();
 
+/**
+ * UserContext is a context for managing user-related data such as user details, and market.
+ * This context allows for saving, loading and clearing user details as well as render a user profile.
+ * 
+ * The provider component manages user-related data such as user details, and market.
+ * It also adds the user details to AsyncStorage and allows rendering a profile view.
+ * 
+ * @component 
+ * @param {Object} props - The properties for the component.
+ * @param {Children} props.children - The child components that will use the context.
+ * 
+ * @returns {JSX.Element} A provider wrapping its children with the UserDetailsContext.
+ */
 export const UserProvider = ({ children }) => {
     const [userDetails, setUserDetails] = useState(null);
     const [market, setMarket] = useState(null);
-    const [profilePicture, setProfilePicture] = useState(null);
+    const { accessToken } = useContext(AuthContext);
 
     const STORAGE_KEY = '@user_details';
 
+    /**
+     * Loads the user details from async storage on mount.
+     */
     useEffect(() => {
         const loadUserDetails = async () => {
             try {
@@ -25,45 +42,63 @@ export const UserProvider = ({ children }) => {
 
         loadUserDetails();
     }, []);
+    /**
+     * Makes a call to the spotify API to get the current users details and stores them in AsyncStorage
+     * Updates when the accessToken updates
+     * @async
+     * @function fetchUserProfile
+     */
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            if (accessToken) {
+                try {
+                    const response = await fetch('https://api.spotify.com/v1/me', {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    });
+                    const data = await response.json();
+                    if (data) {
+                        setUserDetails(data);
+                        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    }
+                } catch (error) {
+                    console.error('Error fetching user profile:', error);
+                }
+            }
+        };
+    
+        fetchUserProfile();
+    }, [accessToken]);
 
+    //Sets the market state when the user details update
     useEffect(() => {
         if (userDetails && userDetails.country) {
             setMarket(userDetails.country);
-            setProfilePicture(JSON.stringify(userDetails.images));
         }
     }, [userDetails]);
 
-    const saveUserDetails = async (newDetails) => {
-        try {
-            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newDetails));
-            setUserDetails(newDetails);
-        } catch (error) {
-            console.error('Failed to save user details:', error);
-        }
-    };
-
-    const clearUserDetails = async () => {
-        try {
-            await AsyncStorage.removeItem(STORAGE_KEY);
-            setUserDetails(null);
-            setMarket(null);
-            setProfilePicture(null);
-        } catch (error) {
-            console.error('Failed to clear user details:', error);
-        }
-    };
-
+    /**
+     * Renders the user profile with details such as profile picture, display name, followers,
+     * and product.
+     * If no user is logged in, a message prompting the user to login is rendered instead.
+     * 
+     * @function renderProfile
+     * @param {string} theme - The current theme of the application.
+     * 
+     * @returns {JSX.Element} A react component displaying the users profile or a login message.
+     */
     const renderProfile = (theme) => {
         if (userDetails) {
             return (
                 <View style={[styles.profileContainer, { borderBottomColor: theme === 'dark' ? '#444' : '#ddd' }]}>
-                    <Image source={{ uri: userDetails.images }} style={[styles.profileImage, {borderColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}]} />
+                    <Image source={{ uri: userDetails.images[0]?.url }} style={[styles.profileImage, {borderColor: theme === 'dark' ? '#FCFCFC' : '#2B2B2B'}]} />
                     <Text style={[styles.displayName, { color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B' }]}>
-                        {userDetails.displayName}
+                        {userDetails.display_name}
                     </Text>
                     <View style={styles.rowContainer}>
                         <Text style={[styles.followers, { color: theme === 'dark' ? '#FCFCFC' : '#2B2B2B' }]}>
-                            {userDetails.followers} Followers
+                            {userDetails.followers.total} Followers
                         </Text>
                         <Text style={styles.product}>
                             {userDetails.product}
@@ -81,8 +116,21 @@ export const UserProvider = ({ children }) => {
         );
     };
 
+    /**
+     * Clears the user details in state and AsyncStorage
+     */
+    const clearUserDetails = async () => {
+        try {
+            await AsyncStorage.removeItem(STORAGE_KEY);
+            setUserDetails(null);
+            setMarket(null);
+        } catch (error) {
+            console.error('Failed to clear user details:', error);
+        }
+    };
+
     return (
-        <UserContext.Provider value={{ userDetails, market, saveUserDetails, clearUserDetails, renderProfile, profilePicture }}>
+        <UserContext.Provider value={{ userDetails, market, renderProfile, clearUserDetails }}>
             {children}
         </UserContext.Provider>
     );

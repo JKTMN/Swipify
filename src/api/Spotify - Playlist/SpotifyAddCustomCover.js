@@ -1,3 +1,17 @@
+/**
+ * Updates the cover image of a specified Spotify playlist using a Base64-encoded image.
+ * 
+ * @async
+ * @function AddCoverImage
+ * @param {Object} params - The function parameters.
+ * @param {string} params.accessToken - The users Spotify accessToken.
+ * @param {string} params.playlistId - The unique ID of the playlist to update.
+ * @param {string} param.selectedImageB64 - The base64-encoded string of the image.
+ * 
+ * @throws {Error} if the image data is missing or the upload fails.
+ * 
+ * @source "https://developer.spotify.com/documentation/web-api/reference/upload-custom-playlist-cover". 
+ */
 const AddCoverImage = async ({ accessToken, playlistId, selectedImageB64 }) => {
 
   if (!selectedImageB64) {
